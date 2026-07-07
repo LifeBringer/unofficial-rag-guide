@@ -91,54 +91,50 @@ Five **random** chunks (`python chunk.py --sample 5 --seed 201` — seeded so th
 
 ## Embedding Model
 
-<!-- Name the embedding model you used and explain your choice.
-     Then answer: if you were deploying this system for real users and cost wasn't a constraint,
-     what tradeoffs would you weigh in choosing a different model?
-     Consider: context length limits, multilingual support, accuracy on domain-specific text,
-     latency, and local vs. API-hosted. -->
+**Model used:** `all-MiniLM-L6-v2` via `sentence-transformers` — local, no API key or rate limits, 384-dimensional embeddings, normalized and stored in a persistent ChromaDB collection with cosine distance (`build_index.py`). All 387 chunks embed in ~2 seconds on a laptop. Its ~256-token input window is part of why chunks were capped at 900 characters — every chunk fits without truncation.
 
-**Model used:**
+**Production tradeoff reflection:** if this were deployed for real users and cost weren't the deciding factor, I'd weigh:
 
-**Production tradeoff reflection:**
+- **Accuracy on informal text.** MiniLM is trained on general sentence pairs; Reddit slang ("traphouse," "fish" for unofficial co-op residents) is out-of-distribution. A stronger model (`bge-large`, OpenAI `text-embedding-3-large`, Cohere embed-v4) would likely rank idiomatic content better — but I'd A/B it on this eval set before paying for it, because on our observed queries MiniLM already puts the right chunk in the top 3 with distances 0.25–0.36.
+- **Context length.** MiniLM's ~256-token window forces small chunks. A long-context embedding model would allow whole-comment-tree chunks and fewer split-boundary artifacts.
+- **Local vs. API.** Local means zero per-query cost, no rate limits, and queries never leave the machine — which matters here, since housing queries can be sensitive ("is my landlord scamming me?"). An API model adds accuracy but also ~100–300 ms latency, a billing dependency, and an availability dependency. For a free campus tool I'd stay local (upgrading to `bge-small`/`gte-base` is nearly free accuracy); for a funded product I'd benchmark API models first.
+- **Multilingual support.** MiniLM is English-only. If we ingested international-student housing groups (WeChat, KakaoTalk), code-switched posts would need `multilingual-e5` or an API model.
 
 ---
 
 ## Retrieval Test Results
 
-<!-- Run these 3 queries through your retrieval system and record the top returned chunks.
-     For at least 2 of the 3, explain why the returned chunks are relevant to the query.
-     Results must be text — not screenshots. -->
+Run with `python query.py "<question>"` — distances are cosine (lower = closer). On-topic top hits land 0.25–0.44. Far-off-topic queries ("best CS professor for 61A?") land 0.62+, but **near-domain off-scope queries land much closer** — "best boba near campus?" hits 0.448, essentially tied with the legitimate "decline my housing offer" query at 0.44. That measurement drove a design decision: distance alone cannot decide refusals, so out-of-scope handling is enforced in the generation prompt (see Grounded Generation) rather than by a similarity cutoff.
 
-**Query 1:**
+**Query 1:** `How much does a one-way BART ride from Oakland to Berkeley cost?`
 
-Top returned chunks:
--
--
--
+Top returned chunks (all from `reddit_commute-nearby`, 2023):
 
-Relevance explanation:
+- *(0.286)* "[How's the BART? Is it viable as a commute option?] I commute using a combination of Amtrak and BART (Davis > Richmond BART > Downtown Berkeley), so in my opinion, Oakland > Berkeley via BART is perfectly viable. There are low-income passes/rates if you qualify, otherwise you can save $3 by autoloading $48 for $45."
+- *(0.313)* "…as other people mentioned, buses are free for students. the 6 down Telegraph has 10-12 min frequencies, the 51B down College has 15 min frequencies…"
+- *(0.316)* "…Going from Oakland to Berkeley is only 2.25 one way on BART. Also AC Transit (buses) is free for students. Cal students don't get a BART discount as someone said unless they are chosen for part of the pilot program…"
 
----
+Relevance explanation: every hit comes from the one thread where students discuss exactly this commute. The chunk that answers the literal question ($2.25 one-way) is #3 — the two chunks above it are *about* BART costs and viability (fare-loading discounts, free buses as the cheaper alternative), which is semantic search working as intended: it ranks by topical closeness, not by "contains the number the user wants." This is why generation gets k=5 chunks, not just the top hit.
 
-**Query 2:**
+**Query 2:** `Which other company names does Raj Properties operate under?`
 
-Top returned chunks:
--
--
--
+Top returned chunks (all from `reddit_landlords`, 2023):
 
-Relevance explanation:
+- *(0.254)* "…I am a former employee. Whatever you do DO NOT rent here! The name of other companies listed is completely false. Raj Properties is not associated with any of those. They are linked to Kiran Properties in the Fresno area and Sapna Investments."
+- *(0.257)* "A lot of the other companies in Berkeley are actually owned by Raj. It's Raj with a different name. Everest Properties, Square One Management, Anchor Valley Partners, etc. All Raj. Here's a list I found: - Everest Properties - Raj Properties - URSA Apartments - Domingo Properties - University Walk Apartments - Berkeley Park Apartments - A.S.K. Rentals - Square One Management"
+- *(0.287)* "what properties are the ones tha raj group controls?"
 
----
+Relevance explanation: #2 is the 72-point comment containing the full alias list — a direct answer. But the *top* hit is a former employee's rebuttal claiming the alias list is false and naming two different affiliated companies. Both are maximally "about" the query, and cosine distance can't tell claim from counterclaim — the corpus genuinely disputes this fact, so good retrieval here means surfacing **both** sides, and it does. (#3 is the question that prompted the list; near-zero information but topically dead-on — a known cost of keeping short top-level comments.)
 
-**Query 3:**
+**Query 3:** `How do students compare Blackwell Hall and Unit 3 as freshman dorms?`
 
-Top returned chunks:
--
--
--
+Top returned chunks (all from `reddit_freshman-dorms`, 2022):
 
-Relevance explanation:
+- *(0.279)* "You were trolled. Blackwell is objectively the best dorm facilities-wise. Unit 3 is probably the worst facilities-wise but has a good location and is very social."
+- *(0.293)* "Blackwell is far superior to most dorms. I've been there several times. Great study rooms, Gym, pool tables and Table Tennis Tables. Only a problem if you needed an apartment 😭"
+- *(0.360)* "We r pretty sure ur trolling, but on the off chance ur not; many consider Blackwell to be the best dorm cuz it's the newest, unit 3 is def not the best, so u shoulda j stayed in Blackwell."
+
+Relevance explanation: the top hit *is* the canonical comparison (the thread's 123-point top comment), and #2 adds the concrete amenities. Note the query never uses the words from the thread title ("URGENT: how to switch out of blackwell") — it matches on meaning, which is exactly what embeddings buy over keyword search: "compare X and Y as dorms" finds comments written as "X is objectively the best, Y is probably the worst."
 
 ---
 
