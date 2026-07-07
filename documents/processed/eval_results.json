@@ -1,0 +1,247 @@
+[
+  {
+    "n": 1,
+    "question": "How much does a one-way BART ride from Oakland to Berkeley cost, and which transit is free for Cal students?",
+    "answer": "According to one commenter [Source 1], a one-way BART ride from Oakland to Berkeley costs $2.25. As for free transit, multiple commenters [Source 1, Source 2, Source 5] report that AC Transit buses are free for Cal students.",
+    "sources": [
+      "[Source 1] reddit_commute-nearby — \"How's the BART? Is it viable as a commute option?\" (2023) https://www.reddit.com/r/berkeley/comments/13b5bve/hows_the_bart_is_it_viable_as_a_commute_option/",
+      "[Source 2] reddit_commute-nearby — \"How's the BART? Is it viable as a commute option?\" (2023) https://www.reddit.com/r/berkeley/comments/13b5bve/hows_the_bart_is_it_viable_as_a_commute_option/",
+      "[Source 3] reddit_commute-nearby — \"How's the BART? Is it viable as a commute option?\" (2023) https://www.reddit.com/r/berkeley/comments/13b5bve/hows_the_bart_is_it_viable_as_a_commute_option/",
+      "[Source 4] reddit_commute-nearby — \"How's the BART? Is it viable as a commute option?\" (2023) https://www.reddit.com/r/berkeley/comments/13b5bve/hows_the_bart_is_it_viable_as_a_commute_option/",
+      "[Source 5] reddit_commute-nearby — \"How's the BART? Is it viable as a commute option?\" (2023) https://www.reddit.com/r/berkeley/comments/13b5bve/hows_the_bart_is_it_viable_as_a_commute_option/"
+    ],
+    "retrieved": [
+      {
+        "chunk": "reddit_commute-nearby:002",
+        "kind": "comment",
+        "year": 2023,
+        "distance": 0.21,
+        "text": "[How's the BART? Is it viable as a commute option?] Going from Oakland to Berkeley is only 2.25 one way on BART. Also AC Transit (buses) is free for students. Cal students don’t get a BART discount as someone said unless they are chosen for part of the pilot program that offers some Cal students free BART rides. Thousands of people rely on BART daily for their commutes and while it can be interrupted by delays and police activity, I still consider it to be reliable, especially if you’re only taking it 3-4 stops like it would be for you most likely. But agree with the main point Ant378 brought up"
+      },
+      {
+        "chunk": "reddit_commute-nearby:020",
+        "kind": "comment",
+        "year": 2023,
+        "distance": 0.219,
+        "text": "[How's the BART? Is it viable as a commute option?] as other people mentioned, buses are free for students. the 6 down Telegraph has 10-12 min frequencies, the 51B down College has 15 min frequencies, and the rest of the routes go into Oakland from Berkeley Downtown or just south of campus come every 30. If you're looking for locations in Oakland that may be something to consider."
+      },
+      {
+        "chunk": "reddit_commute-nearby:021",
+        "kind": "comment",
+        "year": 2023,
+        "distance": 0.238,
+        "text": "[How's the BART? Is it viable as a commute option?] Check out the bus routes that go to campus. Idk if Oakland is any cheaper than Berkeley these days but you could be a bit further down telegraph, college, shattuck, university etc etc and ride a bus instead of bart."
+      },
+      {
+        "chunk": "reddit_commute-nearby:003",
+        "kind": "comment",
+        "year": 2023,
+        "distance": 0.262,
+        "text": "[How's the BART? Is it viable as a commute option?] I’d have to disagree with this commenter, because there are actually plenty of commuter students (and it’s ever increasing because of how expensive Berkeley is). If you have a tight budget and can’t afford to live close to campus, then taking BART to campus is a fairly reliable option. Especially if you’re only planning to commute from Oakland (but also check out places in Albany and El Cerrito just in case). Even better if you live near a bus line that goes directly to campus/downtown Berkeley (like the 51, 6, 18, F, etc.), which can save you some extra money. Though the bus can take longer, if you plan ahead and leave early it’s usually fine (and as a general rule, always try to leave early regardless of whether you’re taking BART, bus, or ride share). "
+      },
+      {
+        "chunk": "reddit_commute-nearby:022",
+        "kind": "comment",
+        "year": 2023,
+        "distance": 0.265,
+        "text": "[How's the BART? Is it viable as a commute option?] Live in a cheaper adjacent city like Oakland, Albany, Emeryville, or El Cerrito and take AC transit busses.\n\nIt's worth it to see what major lines serve the campus and to try and situate your house/apartment location near one of those major bus lines.\n\nYou get a bus pass as a Cal Student as part of student fees.\n\nLook at Transit.org for AC transit lines that serve the Berkeley campus.\n\nBe transit smart: Don't use your laptop on the bus, ride towards the front near the driver (especially after dark), and think about bus stop and walking safety after dark.\n\nI went to Cal and I'm still on AC transit, BART and MUNI daily, and I have never felt unsafe.\n\nMy teenage daughter takes AC transit and BART all over the East Bay and San Francisco with friends (and by herself since she was 13)."
+      }
+    ]
+  },
+  {
+    "n": 2,
+    "question": "Which other company names do students say Raj Properties operates under?",
+    "answer": "One commenter reports that Raj Properties operates under several other names, including Everest Properties, Square One Management, Anchor Valley Partners, URSA Apartments, Domingo Properties, University Walk Apartments, Berkeley Park Apartments, and A.S.K. Rentals [Source 1]. However, another commenter, who claims to be a former employee, disputes this list, stating that Raj Properties is only associated with Kiran Properties and Sapna Investments [Source 2]. A third commenter simply states that Raj Properties is the same as SquareOne Properties [Source 4].",
+    "sources": [
+      "[Source 1] reddit_landlords — \"PSA: DO NOT RENT WITH RAJ PROPERTIES\" (2023) https://www.reddit.com/r/berkeley/comments/12f4qqb/psa_do_not_rent_with_raj_properties/",
+      "[Source 2] reddit_landlords — \"PSA: DO NOT RENT WITH RAJ PROPERTIES\" (2023) https://www.reddit.com/r/berkeley/comments/12f4qqb/psa_do_not_rent_with_raj_properties/",
+      "[Source 3] reddit_landlords — \"PSA: DO NOT RENT WITH RAJ PROPERTIES\" (2023) https://www.reddit.com/r/berkeley/comments/12f4qqb/psa_do_not_rent_with_raj_properties/",
+      "[Source 4] reddit_landlords — \"PSA: DO NOT RENT WITH RAJ PROPERTIES\" (2023) https://www.reddit.com/r/berkeley/comments/12f4qqb/psa_do_not_rent_with_raj_properties/",
+      "[Source 5] reddit_landlords — \"PSA: DO NOT RENT WITH RAJ PROPERTIES\" (2023) https://www.reddit.com/r/berkeley/comments/12f4qqb/psa_do_not_rent_with_raj_properties/"
+    ],
+    "retrieved": [
+      {
+        "chunk": "reddit_landlords:003",
+        "kind": "comment",
+        "year": 2023,
+        "distance": 0.274,
+        "text": "[PSA: DO NOT RENT WITH RAJ PROPERTIES] A lot of the other companies in Berkeley are actually owned by Raj. It’s Raj with a different name. Everest Properties, Square One Management, Anchor Valley Partners, etc.\n\nAll Raj.\n\nHere’s a list I found:\n- Everest Properties\n- Raj Properties\n- URSA Apartments\n- Domingo Properties\n- University Walk Apartments\n- Berkeley Park Apartments\n- A.S.K. Rentals\n- Square One Management"
+      },
+      {
+        "chunk": "reddit_landlords:070",
+        "kind": "comment",
+        "year": 2023,
+        "distance": 0.287,
+        "text": "[PSA: DO NOT RENT WITH RAJ PROPERTIES] I know this is an older post but let’s just say I am a former employee. Whatever you do DO NOT rent here! The name of other companies listed is completely false. Raj Properties is not associated with any of those. They are linked to Kiran Properties in the Fresno area and Sapna Investments."
+      },
+      {
+        "chunk": "reddit_landlords:062",
+        "kind": "comment",
+        "year": 2023,
+        "distance": 0.326,
+        "text": "[PSA: DO NOT RENT WITH RAJ PROPERTIES] what properties are the ones tha raj group controls?"
+      },
+      {
+        "chunk": "reddit_landlords:021",
+        "kind": "comment",
+        "year": 2023,
+        "distance": 0.374,
+        "text": "[PSA: DO NOT RENT WITH RAJ PROPERTIES] They are the same as SquareOne Properties."
+      },
+      {
+        "chunk": "reddit_landlords:009",
+        "kind": "comment",
+        "year": 2023,
+        "distance": 0.384,
+        "text": "[PSA: DO NOT RENT WITH RAJ PROPERTIES] I rented with Raj. For $1300/month each, we got a house with 1) no running water for a week straight, 2) an oven that auto locked and burned all the kitchen utensils inside, 3) a window that went flying off during a storm, 4) holes in all the walls, and 5) a freezer that didn’t freeze. \n\nThat said, the owner of Raj properties (now deceased) was the second biggest landowner in Berkeley and has MANY different real estate offices. It’s actually really hard to find a company not owned by him. Try North side."
+      }
+    ]
+  },
+  {
+    "n": 3,
+    "question": "What do students warn will happen if you decline your UC Berkeley on-campus housing offer?",
+    "answer": "I don't have enough information on that in my documents.",
+    "sources": [
+      "[Source 1] web_housing_what_to_expect — \"Finding Housing Off Campus: What to Expect\" (2024) https://life.berkeley.edu/finding-housing-what-to-expect/",
+      "[Source 2] reddit_apartment-timeline — \"Good time to look for housing?\" (2022) https://www.reddit.com/r/berkeley/comments/t16je2/good_time_to_look_for_housing/",
+      "[Source 3] web_offcampus_search_tips — \"Off-Campus Housing Search Tips\" (2024) https://life.berkeley.edu/off-campus-housing-search-tips/",
+      "[Source 4] web_housing_what_to_expect — \"Finding Housing Off Campus: What to Expect\" (2024) https://life.berkeley.edu/finding-housing-what-to-expect/",
+      "[Source 5] web_housing_what_to_expect — \"Finding Housing Off Campus: What to Expect\" (2024) https://life.berkeley.edu/finding-housing-what-to-expect/"
+    ],
+    "retrieved": [
+      {
+        "chunk": "web_housing_what_to_expect:000",
+        "kind": "section",
+        "year": 2024,
+        "distance": 0.368,
+        "text": "[Finding Housing Off Campus: What to Expect — Searching for Off-Campus Housing] I lived my first year in the residence halls as a freshman and am glad I did. Most students live on campus for at least a year, if not more. But now I’m venturing into off-campus housing and am here to share what I’ve learned from my own searching and from consulting with fellow UC Berkeley students. Below you’ll find links to helpful resources and answers to some housing search questions you may have!"
+      },
+      {
+        "chunk": "reddit_apartment-timeline:014",
+        "kind": "comment",
+        "year": 2022,
+        "distance": 0.378,
+        "text": "[Good time to look for housing?] It is simple. Berkeley housing market is fucked and entirely controlled by landlords. It is unfortunate that Berkeley release decisions later compared to other universities but I place the blame on NIMBYs who have an incentive to keep housing market this way."
+      },
+      {
+        "chunk": "web_offcampus_search_tips:005",
+        "kind": "section",
+        "year": 2024,
+        "distance": 0.402,
+        "text": "[Off-Campus Housing Search Tips — General Tips Before Signing the Lease] These are a few preparatory measures, boxes to check, and tenant rights you should be aware of:\n\nHave a cosigner, reference, and landlord’s info in advance\n\nHop on the official UC Berkeley Discord to search for potential roommates\n\nBring a credit report, application, and deposit ahead of time\n\nKnow whether it’s a sublease or for rent, what the utilities are, and take photos and videos during your visit\n\nCheck safety requirements such as window locks and smoke detectors\n\nBe aware of costs such as first month fees, deposit, moving supplies, and appliances\n\nYour building must meet habitability requirements by the City of Berkeley, including but not limited to working gas and plumbing, and unbroken doors and windows\n\nMap grocery stores around your neighborhood"
+      },
+      {
+        "chunk": "web_housing_what_to_expect:005",
+        "kind": "section",
+        "year": 2024,
+        "distance": 0.415,
+        "text": "[Finding Housing Off Campus: What to Expect — You Found It! But How?] …than other off-campus housing options around Berkeley with great perks such as cleaning services and a meal plan. Mahrosh: Pro Tip: If you are searching on Facebook in places like the UC Berkeley Off-Campus Housing group, your Facebook profile should have a picture, otherwise someone may think you are a scammer. On that note: Be careful of scammers, they are real and they exist. For potential scammers, look out for the following things: when someone wants your money before showing the apartment, they hesitated about any valid identification, they do not accept live requests for room tours or even a virtual video call one, and if they refuse a video call interview."
+      },
+      {
+        "chunk": "web_housing_what_to_expect:006",
+        "kind": "section",
+        "year": 2024,
+        "distance": 0.417,
+        "text": "[Finding Housing Off Campus: What to Expect — Down to Business: Leases, Utilities, and Tenant Rights] …are all comfortable with, and then reframe your search to match that, leaving some space for wiggle room to be safe. Preslee: I immediately found virtual tours and contacted the staff that oversaw that specific house since the real estate group had multiple properties around Berkeley. Along with personal research online, I called and asked them questions about the process, roommate pairings, housing responsibilities, and amenities. I had to sign the lease and pay the down deposit in a short time because housing in Berkeley goes fast. My utilities were separate but a fixed amount. The lease process was seamless and entirely online. Be attentive to any of the fine print. It’s common for them to require a cosigner so be sure to have a family member or friend in mind if that’s the case. I paid my rent in full to avoid having a cosigner, but that’s a very particular and uncommon instance."
+      }
+    ]
+  },
+  {
+    "n": 4,
+    "question": "How do students compare Blackwell Hall and Unit 3 as freshman dorms?",
+    "answer": "One commenter reports that Blackwell is \"objectively the best dorm facilities-wise\", while Unit 3 is considered to have \"the worst facilities-wise\" but has a good location and is very social [Source 1]. Another commenter agrees that Blackwell is \"far superior to most dorms\" [Source 2]. A third commenter also considers Blackwell to be the best dorm, noting that it's the newest, and implies that Unit 3 is not as desirable [Source 3]. Overall, the top comments from 2022 say that Blackwell is preferred over Unit 3 in terms of facilities [Source 1, Source 2, Source 3, Source 4].",
+    "sources": [
+      "[Source 1] reddit_freshman-dorms — \"URGENT: how to switch out of \"blackwell\"\" (2022) https://www.reddit.com/r/berkeley/comments/v1xbix/urgent_how_to_switch_out_of_blackwell/",
+      "[Source 2] reddit_freshman-dorms — \"URGENT: how to switch out of \"blackwell\"\" (2022) https://www.reddit.com/r/berkeley/comments/v1xbix/urgent_how_to_switch_out_of_blackwell/",
+      "[Source 3] reddit_freshman-dorms — \"URGENT: how to switch out of \"blackwell\"\" (2022) https://www.reddit.com/r/berkeley/comments/v1xbix/urgent_how_to_switch_out_of_blackwell/",
+      "[Source 4] reddit_freshman-dorms — \"URGENT: how to switch out of \"blackwell\"\" (2022) https://www.reddit.com/r/berkeley/comments/v1xbix/urgent_how_to_switch_out_of_blackwell/",
+      "[Source 5] reddit_freshman-dorms — \"URGENT: how to switch out of \"blackwell\"\" (2022) https://www.reddit.com/r/berkeley/comments/v1xbix/urgent_how_to_switch_out_of_blackwell/"
+    ],
+    "retrieved": [
+      {
+        "chunk": "reddit_freshman-dorms:003",
+        "kind": "comment",
+        "year": 2022,
+        "distance": 0.279,
+        "text": "[URGENT: how to switch out of \"blackwell\"] You were trolled. Blackwell is objectively the best dorm facilities-wise. Unit 3 is probably the worst facilities-wise but has a good location and is very social."
+      },
+      {
+        "chunk": "reddit_freshman-dorms:043",
+        "kind": "comment",
+        "year": 2022,
+        "distance": 0.293,
+        "text": "[URGENT: how to switch out of \"blackwell\"] Blackwell is far superior to most dorms. I’ve been there several times. Great study rooms, Gym, pool tables and Table Tennis Tables. Only a problem if you needed an apartment 😭"
+      },
+      {
+        "chunk": "reddit_freshman-dorms:004",
+        "kind": "comment",
+        "year": 2022,
+        "distance": 0.36,
+        "text": "[URGENT: how to switch out of \"blackwell\"] We r pretty sure ur trolling, but on the off chance ur not; many consider Blackwell to be the best dorm cuz it’s the newest, unit 3 is def not the best, so u shoulda j stayed in Blackwell."
+      },
+      {
+        "chunk": "reddit_freshman-dorms:049",
+        "kind": "comment",
+        "year": 2022,
+        "distance": 0.36,
+        "text": "[URGENT: how to switch out of \"blackwell\"] Dude blackwell is the best dorm by far. Just take it and enjoy your time there."
+      },
+      {
+        "chunk": "reddit_freshman-dorms:017",
+        "kind": "comment",
+        "year": 2022,
+        "distance": 0.386,
+        "text": "[URGENT: how to switch out of \"blackwell\"] 1. no\n2. the seniors told me that I should switch to unit 3 or just find some off-campus housing which they said would be \"easy to do.\" I guess they were probably trolling about that too"
+      }
+    ]
+  },
+  {
+    "n": 5,
+    "question": "What does a room in a shared apartment near campus typically cost, according to students?",
+    "answer": "According to students in 2023, a room in a shared apartment near campus can cost around $1225 per month for a 10-minute walk from campus [Source 2], $1300 per month for a 15-20 minute walk from campus [Source 3], and one commenter reports a past price of $1000 per month for a 13-minute walk from campus [Source 5].",
+    "sources": [
+      "[Source 1] web_offcampus_search_tips — \"Off-Campus Housing Search Tips\" (2024) https://life.berkeley.edu/off-campus-housing-search-tips/",
+      "[Source 2] reddit_rent-prices — \"How much do you pay in rent? I want some rent transparency so I know I’m not getting scammed\" (2023) https://www.reddit.com/r/berkeley/comments/11503dk/how_much_do_you_pay_in_rent_i_want_some_rent/",
+      "[Source 3] reddit_rent-prices — \"How much do you pay in rent? I want some rent transparency so I know I’m not getting scammed\" (2023) https://www.reddit.com/r/berkeley/comments/11503dk/how_much_do_you_pay_in_rent_i_want_some_rent/",
+      "[Source 4] web_housing_what_to_expect — \"Finding Housing Off Campus: What to Expect\" (2024) https://life.berkeley.edu/finding-housing-what-to-expect/",
+      "[Source 5] reddit_rent-prices — \"How much do you pay in rent? I want some rent transparency so I know I’m not getting scammed\" (2023) https://www.reddit.com/r/berkeley/comments/11503dk/how_much_do_you_pay_in_rent_i_want_some_rent/"
+    ],
+    "retrieved": [
+      {
+        "chunk": "web_offcampus_search_tips:002",
+        "kind": "section",
+        "year": 2024,
+        "distance": 0.37,
+        "text": "[Off-Campus Housing Search Tips — OCH: Start Here] …looking at. Can you look at it for me?’ before they send their money.”\n\nHow do you effectively navigate the OCH site? “The best thing to do is to set about two parameters. The main parameter is the maximum rent amount. The listings you see on the front page are the properties that have a large budget. If you were to set your max rent, that would flush out a lot of those. Set if it comes fully furnished because many students don’t have furniture or have the wherewithal to get furniture. Sharing rent will always be way cheaper than finding your own place. Getting familiar and being realistic with what your budget can get you is the most important.”\n\nWhat’s the question you’re asked most often?"
+      },
+      {
+        "chunk": "reddit_rent-prices:025",
+        "kind": "comment",
+        "year": 2023,
+        "distance": 0.379,
+        "text": "[How much do you pay in rent? I want some rent transparency so I know I’m not getting scammed] Currently have a single room in a 2bed/1 bath apartment (with no living room, but large bedrooms) for $1225 a month. 2 blocks from campus (~10 min walk)"
+      },
+      {
+        "chunk": "reddit_rent-prices:014",
+        "kind": "comment",
+        "year": 2023,
+        "distance": 0.391,
+        "text": "[How much do you pay in rent? I want some rent transparency so I know I’m not getting scammed] $1300 for a single room in a 2bed/1ba about a 15-20 min walk from campus, 1 block a bus line to campus and grocery store"
+      },
+      {
+        "chunk": "web_housing_what_to_expect:004",
+        "kind": "section",
+        "year": 2024,
+        "distance": 0.392,
+        "text": "[Finding Housing Off Campus: What to Expect — What to Consider When Searching] What factors did you consider when searching for housing?\n\nMelissa: My roommates and I made a spreadsheet that listed out apartments we liked and where we tracked things like the cost, utilities included, when the lease would start, how far it was from campus, if it was close to any bus stops, etc. Touring the places was also incredibly helpful, because sometimes looking at the provided pictures is not enough. If you can’t tour a place yourself, try to find a friend or family member to view it for you."
+      },
+      {
+        "chunk": "reddit_rent-prices:046",
+        "kind": "comment",
+        "year": 2023,
+        "distance": 0.396,
+        "text": "[How much do you pay in rent? I want some rent transparency so I know I’m not getting scammed] Used to be $1000 for single room, 13 minute walk from campus"
+      }
+    ]
+  }
+]

@@ -1,9 +1,21 @@
-# The Unofficial Guide — Project 1
+# The Unofficial Guide — UC Berkeley Housing (Project 1)
 
-> **How to use this template:**
-> Complete each section *after* you've built and tested the corresponding part of your system.
-> Do not write placeholder text — if a section isn't done yet, leave it blank and come back.
-> Every section below is required for submission. One-liners will not receive full credit.
+A RAG system that makes student-shared knowledge about UC Berkeley housing searchable and answerable, with citations, from 12 real r/berkeley threads and 2 student guides.
+
+**Quick start**
+
+```bash
+python3.12 -m venv .venv && source .venv/bin/activate
+pip install -r requirements.txt
+cp .env.example .env          # add your free Groq key (console.groq.com)
+
+python ingest.py              # raw documents -> cleaned records
+python chunk.py               # -> 387 chunks (documents/processed/chunks.jsonl)
+python build_index.py         # embed + load into ChromaDB
+python app.py                 # web UI at http://localhost:7860
+python query.py "What happens if I decline my housing offer?"   # or CLI
+python evaluate.py            # reproduce the evaluation report
+```
 
 ---
 
@@ -163,7 +175,7 @@ One deliberate *non*-mechanism: there is **no distance-threshold refusal gate**.
 
 ## Example Responses
 
-All three are verbatim `python query.py "<question>"` outputs.
+All three are real `python query.py "<question>"` outputs — quoted verbatim except where an abridgement is explicitly marked (`[…]` / *"+2 more context sources"*).
 
 **Grounded response 1**
 
@@ -230,7 +242,7 @@ A Gradio web UI (`python app.py` → http://localhost:7860). There is also a CLI
 
 **Sample Interaction Transcript**
 
-As it appears in the interface (Answer and Retrieved from fields, verbatim):
+As it appears in the interface — Answer and Retrieved-from fields verbatim (the third output field, the collapsed Retrieved-chunks accordion, is omitted here for length):
 
 > **User:** What happens if I decline my UC Berkeley housing offer?
 
@@ -247,76 +259,68 @@ As it appears in the interface (Answer and Retrieved from fields, verbatim):
 
 ## Evaluation Report
 
-<!-- Run your 5 test questions from planning.md through your system and record the results.
-     Be honest — a partially accurate or inaccurate result that you explain well is more
-     valuable than a suspiciously perfect result. -->
+Run with `python evaluate.py` — full traces (answers, sources, retrieved chunk ids with distances) are in [`documents/processed/eval_results.json`](documents/processed/eval_results.json). Judgments were made by hand against the expected answers written in `planning.md` *before* implementation.
 
 | # | Question | Expected answer | System response (summarized) | Retrieval quality | Response accuracy |
 |---|----------|-----------------|------------------------------|-------------------|-------------------|
-| 1 | | | | | |
-| 2 | | | | | |
-| 3 | | | | | |
-| 4 | | | | | |
-| 5 | | | | | |
+| 1 | How much does a one-way BART ride from Oakland to Berkeley cost, and which transit is free for Cal students? | ~$2.25 one-way; AC Transit buses free for students; no general BART discount (randomized pilot only) | "$2.25 [Source 1]… AC Transit buses are free for Cal students [Source 1, 2, 5]" — all 5 chunks from the commute thread, distances 0.21–0.27. (Omits the no-general-BART-discount detail, which was in the retrieved chunk; both asked sub-questions answered correctly) | Relevant | **Accurate** |
+| 2 | Which other company names do students say Raj Properties operates under? | ≥3 of the 8 aliases (Everest, URSA, Domingo, University Walk, Berkeley Park, A.S.K., Square One, Anchor Valley); great answers reflect that replies dispute the list | Named **all 8 aliases** [Source 1], then presented the former employee's dispute ("only associated with Kiran Properties and Sapna Investments") [Source 2] and the SquareOne confirmation [Source 4] | Relevant | **Accurate** |
+| 3 | What do students warn will happen if you decline your UC Berkeley on-campus housing offer? | Never decline — ~1.5 months left to scramble; once declined you can only request a swap while holding an assignment | **"I don't have enough information on that in my documents."** — a refusal on a question the corpus can answer | **Off-target** (answering chunk ranked 8th, outside k=5) | **Inaccurate** |
+| 4 | How do students compare Blackwell Hall and Unit 3 as freshman dorms? | Blackwell: newest, best facilities (study rooms, gym, game tables); Unit 3: worst facilities but good location, very social, cheaper | Quoted "objectively the best dorm facilities-wise" vs "the worst facilities-wise… good location and is very social", plus "far superior" amenities comment, with 2022 attribution [Sources 1–4] | Relevant | **Accurate** |
+| 5 | What does a room in a shared apartment near campus typically cost, according to students? | Roughly $800–$1,500/month for private rooms in shared units (2023 thread), with concrete examples; studios and 1b1b higher | Gave three real, correctly-cited 2023 price points ($1,225, $1,300, $1,000) — but presented a **narrower range than the corpus supports** ($800–$1,500+), and 2 of 5 retrieval slots went to guide sections with no prices | Partially relevant | **Partially accurate** |
 
 **Retrieval quality:** Relevant / Partially relevant / Off-target  
 **Response accuracy:** Accurate / Partially accurate / Inaccurate
+
+**Score: 3 accurate, 1 partially accurate, 1 inaccurate.** The two imperfect results are exactly the failure modes `planning.md` anticipated (aggregation questions vs. top-k, and retrieval sensitivity) — analyzed below.
 
 ---
 
 ## Failure Case Analysis
 
-<!-- Identify at least one question where retrieval or generation did not work as expected.
-     Write a specific explanation of *why* it failed, tied to a part of the pipeline.
+**Question that failed:** Q3 — *"What do students warn will happen if you decline your UC Berkeley on-campus housing offer?"*
 
-     "The answer was wrong" is not an explanation.
+**What the system returned:** the exact refusal phrase — "I don't have enough information on that in my documents." — even though the corpus contains a direct answer (the 2019 housing-lottery comment: *"when you get the offer - DO NOT DECLINE - you're fucked if you do because now you have essentially about 1.5 months to secure housing for yourself"*).
 
-     "The relevant information was split across a chunk boundary, so retrieval returned
-     only half the context — the model didn't have enough to answer correctly" is an explanation.
+**Root cause (tied to a specific pipeline stage):** this is a **retrieval failure, measured precisely**. Ranking the full index for this exact question puts the answering chunk (`reddit_housing-lottery:003`) at **rank 8, distance 0.432** — the k=5 cutoff fell at 0.417, so it missed the context window by 0.015 cosine distance. Two mechanisms produced that miss:
 
-     "The embedding model treated the professor's nickname as out-of-vocabulary and returned
-     results from an unrelated review" is an explanation. -->
+1. *Query phrasing pulled the wrong neighborhood.* The words "students warn," "on-campus," and "housing offer" match the two Berkeley Life guides' Q&A-style prose ("Finding Housing: What to Expect") better than any single Reddit comment — guide sections took 4 of the top 5 slots without containing the warning.
+2. *The answering chunk's embedding is diluted.* That comment covers the whole housing process in one breath (offer timing, the decline warning, and general advice), so its embedding sits "between topics" instead of squarely on declining offers.
 
-**Question that failed:**
+The proof it's retrieval and not generation: the paraphrase **"What happens if I decline my UC Berkeley housing offer?" retrieves the same chunk at rank 1 and answers correctly** (it's Grounded Response 1 in the Example Responses section). Same index, same prompt, same model — a 7-word phrasing change flips the outcome. Given the chunks it actually received, the model's refusal was the *correct* behavior; the failure happened one stage earlier.
 
-**What the system returned:**
+**What you would change to fix it:** three candidate fixes, in order of expected value: (1) **hybrid retrieval** — BM25 would score the literal word "decline" heavily and rank the comment in the top 3 (this motivated the Hybrid Search stretch feature); (2) raise k from 5 to 8 (would have caught it here, at the cost of more dilution on questions like Q5); (3) query expansion — retrieve on 2–3 LLM-generated paraphrases and merge results, directly attacking phrasing sensitivity.
 
-**Root cause (tied to a specific pipeline stage):**
-
-**What you would change to fix it:**
+**Secondary failures worth recording:** Q5 (rent) retrieved only 3 of the 38 price-bearing chunks in the index (the raw thread has 44 price-bearing comments; 6 didn't survive dedup/length filtering) and reported an unrepresentatively narrow range — the aggregation-vs-top-k failure `planning.md` predicted; it can't be fixed by retrieval tuning alone (a "what's typical" question needs *all* the data points, i.e., a metadata-filtered aggregation step, not similarity search). And adversarial red-teaming (see Grounded Generation) found a reproducible **citation fabrication** under false-premise questions — a generation-stage failure where a plausible uncited claim gets pinned to a real source number.
 
 ---
 
 ## Spec Reflection
 
-<!-- Reflect on how planning.md shaped your implementation.
-     Answer both questions with at least 2–3 sentences each. -->
+**One way the spec helped you during implementation:** writing the evaluation plan — with expected answers verified against the raw corpus *before any pipeline code existed* — turned evaluation from a vibe check into a mechanical comparison, and it forced better questions: Q5 was deliberately designed as an aggregation stressor because the spec's Anticipated Challenges section predicted top-k retrieval would fail at "what's typical" questions, and that prediction landed exactly (Q5 graded partially accurate for an unrepresentative range). The chunking section paid off the same way: because the spec committed to numbers and reasons (900-char cap, 120 overlap, title prefix, per-comment chunks), the AI-generated implementation matched intent on the first pass and every deviation was detectable as a deviation instead of a silent choice.
 
-**One way the spec helped you during implementation:**
-
-**One way your implementation diverged from the spec, and why:**
+**One way your implementation diverged from the spec, and why:** two ways worth owning. First, the spec's "1 comment = 1 chunk" rule turned out to be self-contradictory for the 12 comments longer than the 900-char cap — a 1,056-char comment can't both stay whole and respect the cap. The implementation splits oversized comments like long prose (never across authors), and `planning.md` was updated to say so. Second, the spec named Groq's `llama-3.3-70b-versatile` as the generation endpoint; it turned out `api.groq.com` is IP-blocked from the network this was built on (403 for *any* key, including a deliberately invalid one — a network block, not an auth failure). Rather than swap models and invalidate the course setup, `query.py` keeps Groq as the default path and falls back automatically to the *identical* model (`meta-llama/Llama-3.3-70B-Instruct`) via Hugging Face's OpenAI-compatible router — so graders on a normal network run exactly what the spec promised.
 
 ---
 
 ## AI Usage
 
-<!-- Describe at least 2 specific instances where you used an AI tool during this project.
-     For each: what did you give the AI as input, what did it produce, and what did you
-     change, override, or direct differently?
+The AI tool used throughout was **Claude (Claude Code CLI)**, following the per-milestone plan in `planning.md`.
 
-     "I used Claude to help me code" is not sufficient.
-     "I gave Claude my Chunking Strategy section from planning.md and asked it to implement
-     chunk_text(). It returned a function using a fixed character split. I overrode the
-     chunk size from 500 to 200 because my documents are short reviews, not long guides." -->
+**Instance 1 — ingestion & chunking (`ingest.py`, `chunk.py`)**
 
-**Instance 1**
+- *What I gave the AI:* the Chunking Strategy and Documents sections of `planning.md`, the skim notes from `documents/SOURCES.md` (including the known data quirks: duplicate live/deleted comment records in 3 files, one image post with empty selftext), and the architecture diagram.
+- *What it produced:* the two pipeline scripts implementing the spec — per-comment chunks, 900-char cap, selective 120-char overlap, title prefixes, id-dedup.
+- *What I changed or overrode:* I didn't accept the first output. I had the generated pipeline audited against the actual corpus, which surfaced four cleaning gaps the code missed: "Want More?" cross-promo boilerplate leaking into both web guides' final chunks, WordPress image captions landing as context-free fragments, a `![gif](giphy|…)` embed surviving as junk text, and U+2060 word-joiner characters glued to "URSA" (which would have silently broken keyword search later). I directed fixes for all four and re-ran the audit. I also resolved a spec bug the audit exposed — "1 comment = 1 chunk" contradicts the 900-char cap for 12 oversized comments — by choosing the split-within-author behavior and updating `planning.md`.
 
-- *What I gave the AI:*
-- *What it produced:*
-- *What I changed or overrode:*
+**Instance 2 — grounding design & adversarial testing (`query.py`)**
 
-**Instance 2**
+- *What I gave the AI:* the grounding requirement from the project instructions (context-only answers, refusal on insufficient context, source attribution), my output contract (`ask() → {answer, sources, hits}`), and — after Milestone 4 — the measured distance data showing near-domain off-scope queries (boba, 0.448) are indistinguishable from hard on-topic queries (decline-offer, 0.44).
+- *What it produced:* the system prompt with the exact-refusal-phrase rule and the numbered-source context block, plus a proposed distance-threshold refusal gate.
+- *What I changed or overrode:* I killed the distance-threshold gate — the 0.448-vs-0.44 measurement proves it would either miss off-scope queries or reject legitimate ones — and made prompt-level refusal the only scope mechanism, with attribution moved out of the model's hands entirely (the source list is built in code from retrieval metadata). I then directed a 15-probe adversarial red-team against the finished system; when it found a reproducible citation fabrication under false-premise questions, I chose to document it as a known limitation rather than patch-and-hide it, since the course values honest failure analysis over cosmetic robustness.
 
-- *What I gave the AI:*
-- *What it produced:*
-- *What I changed or overrode:*
+**Instance 3 — a bug the AI's design caused, caught in testing**
+
+- *What I gave the AI:* the source-attribution requirement ("list which documents the answer draws from").
+- *What it produced:* a source list deduplicated by document — which silently broke citation numbering: an answer citing `[Source 4]` could ship with no "Source 4" line when that chunk's document already appeared earlier in the list.
+- *What I changed or overrode:* caught it by reading real output during Milestone 5 testing (the landlords query cited `[Source 4]` and `[Source 5]` but listed entries 1, 2, 3, 5). I overrode the dedup: the printed list now shows every context slot, numbered exactly as the model saw them, even when documents repeat — alignment beats brevity for attribution.
