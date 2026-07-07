@@ -40,9 +40,9 @@ Together these cover eight distinct subtopics (timeline, lottery, neighborhoods,
 
 ## Chunking Strategy
 
-**Chunk size:** structure-aware, target ≤ 900 characters (roughly ≤ 225 tokens). One chunk per Reddit comment; submission selftexts and web-guide sections split on paragraph boundaries into ~900-character pieces. Very short comments (< 120 characters) are dropped unless they are direct replies that answer the thread title (most sub-120-char comments in this corpus are jokes, one-line agreement, or asides).
+**Chunk size:** structure-aware, target ≤ 900 characters (roughly ≤ 225 tokens). One chunk per Reddit comment; submission selftexts, web-guide sections, and the handful of comments that exceed 900 characters (12 in this corpus) split on paragraph boundaries into ~900-character pieces — a split never mixes text from two authors. Very short comments (< 120 characters) are dropped unless they are top-level replies of ≥ 15 characters — a cheap approximation of "directly answers the thread title" that keeps data-bearing one-liners like "800 single 2 blocks" in the rent thread, at the cost of admitting some top-level filler (accepted tradeoff; filtering filler *semantically* would require an LLM judge in the ingestion path).
 
-**Overlap:** 120 characters, applied **only** when splitting long continuous prose (long selftexts like the Casa Zimbabwe exposé, and web-guide sections). No overlap between comments — they are independent utterances by different authors, and overlapping them would bleed one person's opinion into another's chunk.
+**Overlap:** 120 characters, applied **only** when splitting long continuous prose (long selftexts like the Casa Zimbabwe exposé, web-guide sections, and oversized single comments). No overlap between comments — they are independent utterances by different authors, and overlapping them would bleed one person's opinion into another's chunk.
 
 **Reasoning:** This corpus has two very different document shapes, so a single fixed character split (e.g., "every 500 chars") would be wrong for both:
 
@@ -134,7 +134,7 @@ The AI tool for all milestones is **Claude (Claude Code CLI)**. The pattern for 
 **Milestone 3 — Ingestion and chunking:**
 - *Input to AI:* the Documents + Chunking Strategy sections above, the skim notes from `documents/SOURCES.md` (including the duplicate-comment-id and empty-selftext quirks), and the architecture diagram.
 - *Expected output:* `ingest.py` (raw JSON/HTML → cleaned document records) and `chunk.py` (records → chunks with metadata), implementing exactly the sizes/overlap/prefix rules specified here.
-- *Verification:* print 5 random chunks and check them against the good/bad chunk criteria (self-contained, no HTML artifacts, correct source metadata); confirm dedup actually removed the known duplicate ids in `reddit_landlords.json`; confirm total chunk count lands in the 420–470 estimate (investigate if far off).
+- *Verification:* print 5 random chunks and check them against the good/bad chunk criteria (self-contained, no HTML artifacts, correct source metadata); confirm dedup actually removed the known duplicate ids in `reddit_landlords.json`; confirm total chunk count lands in the 250–380 estimate (investigate if far off).
 
 **Milestone 4 — Embedding and retrieval:**
 - *Input to AI:* the Retrieval Approach section, the chunk schema from Milestone 3, and the architecture diagram.

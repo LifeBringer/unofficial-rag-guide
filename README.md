@@ -9,66 +9,83 @@
 
 ## Domain
 
-<!-- What topic or category of knowledge does your system cover?
-     Why is this knowledge valuable, and why is it hard to find through official channels?
-     Example: "Student reviews of CS professors at [university] — useful because official
-     course descriptions don't reflect teaching style, exam difficulty, or workload." -->
+**Student-shared knowledge about housing at UC Berkeley** — the dorm lottery, freshman dorm tradeoffs, co-op life, off-campus apartment hunting, landlord reputations, real rent prices, neighborhood safety, subletting, scams, and commuting from nearby cities.
+
+This knowledge is valuable precisely because official channels don't carry it. The housing portal tells you the application deadline; it doesn't tell you that students warn **never to decline your housing offer** (you'd have ~1.5 months to scramble), that one notorious property company operates under at least eight different names, or that a private room in a shared apartment ran $800–$1,500/month in 2023. Those answers live in years of r/berkeley threads where Reddit's search can't reliably find them — buried in comment #47 of a thread from two years ago.
 
 ---
 
 ## Document Sources
 
-<!-- List every source you collected documents from.
-     Be specific: include URLs, subreddit names, forum thread titles, or file names.
-     Aim for variety — sources that together cover different subtopics or perspectives. -->
+14 documents: 12 r/berkeley threads (2019–2025) + 2 Berkeley Life student guides. Reddit blocks scrapers (403s even from a real browser on this network), so threads were collected via the **PullPush Reddit archive API** (`api.pullpush.io`) — one raw JSON file per thread (submission + all archived comments, saved unmodified). Full manifest with collection details: [`documents/SOURCES.md`](documents/SOURCES.md).
 
 | # | Source | Type | URL or file path |
 |---|--------|------|-----------------|
-| 1 | | | |
-| 2 | | | |
-| 3 | | | |
-| 4 | | | |
-| 5 | | | |
-| 6 | | | |
-| 7 | | | |
-| 8 | | | |
-| 9 | | | |
-| 10 | | | |
+| 1 | r/berkeley: "Good time to look for housing?" (2022) | Reddit thread | [reddit.com/…/t16je2](https://www.reddit.com/r/berkeley/comments/t16je2/good_time_to_look_for_housing/) · `documents/raw/reddit_apartment-timeline.json` |
+| 2 | r/berkeley: "How exactly does housing work?" (2019) | Reddit thread | [reddit.com/…/bf0l31](https://www.reddit.com/r/berkeley/comments/bf0l31/how_exactly_does_housing_work/) · `documents/raw/reddit_housing-lottery.json` |
+| 3 | r/berkeley: "Pros/cons of living in northside vs southside" (2020) | Reddit thread | [reddit.com/…/f4iex8](https://www.reddit.com/r/berkeley/comments/f4iex8/proscons_of_living_in_northside_vs_southside/) · `documents/raw/reddit_northside-southside.json` |
+| 4 | r/berkeley: "Exposing the CO-OPs / Casa Zimbabwe" (2022) | Reddit thread | [reddit.com/…/tcreyk](https://www.reddit.com/r/berkeley/comments/tcreyk/exposing_the_coops_casa_zimbabwe/) · `documents/raw/reddit_coops-bsc.json` |
+| 5 | r/berkeley: "PSA: DO NOT RENT WITH RAJ PROPERTIES" (2023) | Reddit thread | [reddit.com/…/12f4qqb](https://www.reddit.com/r/berkeley/comments/12f4qqb/psa_do_not_rent_with_raj_properties/) · `documents/raw/reddit_landlords.json` |
+| 6 | r/berkeley: "How much do you pay in rent?" (2023) | Reddit thread | [reddit.com/…/11503dk](https://www.reddit.com/r/berkeley/comments/11503dk/how_much_do_you_pay_in_rent_i_want_some_rent/) · `documents/raw/reddit_rent-prices.json` |
+| 7 | r/berkeley: "Parents posting for their kid's housing" (2023) | Reddit thread | [reddit.com/…/12scrpc](https://www.reddit.com/r/berkeley/comments/12scrpc/parents_posting_for_their_kids_housing/) · `documents/raw/reddit_roommates.json` |
+| 8 | r/berkeley: "What are the more dangerous parts of Berkeley?" (2025) | Reddit thread | [reddit.com/…/1ih8viq](https://www.reddit.com/r/berkeley/comments/1ih8viq/what_are_the_more_dangerous_parts_of_berkeley/) · `documents/raw/reddit_safety.json` |
+| 9 | r/berkeley: "URGENT: how to switch out of 'blackwell'" (2022) | Reddit thread | [reddit.com/…/v1xbix](https://www.reddit.com/r/berkeley/comments/v1xbix/urgent_how_to_switch_out_of_blackwell/) · `documents/raw/reddit_freshman-dorms.json` |
+| 10 | r/berkeley: "Subletter denies me of housing last minute…" (2022) | Reddit thread | [reddit.com/…/upw41v](https://www.reddit.com/r/berkeley/comments/upw41v/subletter_denies_me_of_housing_last_minute/) · `documents/raw/reddit_subletting.json` |
+| 11 | r/berkeley: "Signing a lease without actually seeing the place?" (2022) | Reddit thread | [reddit.com/…/wkkkiu](https://www.reddit.com/r/berkeley/comments/wkkkiu/please_help_signing_a_lease_without_actually/) · `documents/raw/reddit_scams.json` |
+| 12 | r/berkeley: "How's the BART? Is it viable as a commute option?" (2023) | Reddit thread | [reddit.com/…/13b5bve](https://www.reddit.com/r/berkeley/comments/13b5bve/hows_the_bart_is_it_viable_as_a_commute_option/) · `documents/raw/reddit_commute-nearby.json` |
+| 13 | Berkeley Life: "Off-Campus Housing Search Tips" | Web guide | [life.berkeley.edu](https://life.berkeley.edu/off-campus-housing-search-tips/) · `documents/raw/web_offcampus_search_tips.html` |
+| 14 | Berkeley Life: "Finding Housing Off Campus: What to Expect" | Web guide | [life.berkeley.edu](https://life.berkeley.edu/finding-housing-what-to-expect/) · `documents/raw/web_housing_what_to_expect.html` |
 
 ---
 
 ## Chunking Strategy
 
-<!-- Describe your chunking approach with enough specificity that someone else could reproduce it.
-     Include:
-     - Chunk size (characters or tokens) and why that size fits your documents
-     - Overlap size and why (or why not) you used overlap
-     - Any preprocessing you did before chunking (e.g., stripping HTML, removing headers)
-     - What your final chunk count was across all documents -->
+**Chunk size:** structure-aware, body capped at 900 characters (~225 tokens). **One Reddit comment = one chunk** — comments are never merged across authors. Submission selftexts, web-guide sections, and the 12 comments longer than 900 chars are split on paragraph boundaries into ≤900-char pieces. Comments under 120 chars are dropped unless they're top-level replies ≥15 chars (that exception keeps data-bearing one-liners like *"800 single 2 blocks"* in the rent thread; it also admits some filler — see Failure Case Analysis).
 
-**Chunk size:**
+**Overlap:** 120 characters, applied **only** when splitting long continuous prose (e.g., the 6,500-char Casa Zimbabwe exposé, web-guide sections). Overlapping pieces start with an `…` continuation marker. There is deliberately *no* overlap between comments: they're independent utterances by different authors, and overlap would bleed one person's opinion into another's chunk and break attribution.
 
-**Overlap:**
+**Why these choices fit your documents:** the corpus has two document shapes. Reddit comments are already natural chunks — a typical substantive comment (median chunk is 249 chars) is one self-contained thought: a price point, a warning, a timeline opinion. A fixed 500-char splitter would cut them mid-sentence or concatenate unrelated authors. Long-form prose (selftexts, guide sections) is the opposite: unsplit, it embeds as a diluted "about everything" vector that matches nothing strongly — hence the 900-char cap, which also fits comfortably inside MiniLM's ~256-token input window. Every chunk is prefixed with its thread/guide title (e.g., `[PSA: DO NOT RENT WITH RAJ PROPERTIES]`) so referential comments like *"avoid them at all costs"* carry their topic into the embedding. Preprocessing before chunking: dedupe comments by id (the PullPush archive returns live/deleted duplicate records in 3 files), drop `[deleted]`/`[removed]` bodies and bare-URL comments, unescape HTML entities, strip zero-width characters, markdown link syntax, image embeds, and web-page boilerplate (nav, image captions, "Want More?" cross-promo outros).
 
-**Why these choices fit your documents:**
-
-**Final chunk count:**
+**Final chunk count:** **387** chunks from 14 documents — 335 comment chunks, 21 selftext pieces, 31 guide-section pieces (run `python chunk.py` to reproduce). Per-document counts range from 10 (northside-southside) to 51 (safety). This landed just above the 250–380 estimate in `planning.md`; the overshoot came from the top-level short-comment exception admitting more one-liners than estimated.
 
 ---
 
 ## Sample Chunks
 
-<!-- Paste 5 representative chunks from your document collection after running your ingestion pipeline.
-     For each chunk, note which source document it came from.
-     These must be actual text — not screenshots. -->
+Five **random** chunks (`python chunk.py --sample 5 --seed 201` — seeded so the sample is reproducible, not cherry-picked), each with an inspection note.
 
-| # | Source document | Chunk text |
-|---|----------------|------------|
-| 1 | | |
-| 2 | | |
-| 3 | | |
-| 4 | | |
-| 5 | | |
+**Chunk 1** — source: `reddit_commute-nearby` (comment, 2023)
+
+> [How's the BART? Is it viable as a commute option?] Ah, I see. That's unfortunate. I suppose I'll watch the alerts and see if it's reliable enough for my purposes. Thank you for the info.
+
+*Inspection:* self-contained and clean, but content-free — a conversational sign-off that passed the 120-char filter on length alone. An honest limitation of length-based filtering (~12% of chunks are filler like this, per a full-corpus audit); retrieval ranking has to bury these, and the Failure Case Analysis section revisits it.
+
+**Chunk 2** — source: `web_housing_what_to_expect` (guide section, split piece, 2024)
+
+> [Finding Housing Off Campus: What to Expect — What to Consider When Searching] …pictures is not enough. If you can't tour a place yourself, try to find a friend or family member to view it for you. Preslee: I prioritized location and cost. I knew that I was going to sell my car upon arriving so I didn't want to be farther than walking distance from campus. I considered convenient amenities such as hand soap, paper towels, and weekly cleaning being provided, for example. I live in a place that comes with a meal plan so that was a huge appeal for me because convenience is ideal during the busy academic year. […]
+
+*Inspection:* a long guide section correctly split — the leading `…pictures is not enough…` is the designed 120-char overlap carrying the tail of the previous piece, so the "tour it yourself or send a friend" advice survives on both sides of the boundary.
+
+**Chunk 3** — source: `reddit_northside-southside` (comment, 2020)
+
+> [Pros/cons of living in northside vs southside:] RSF is at the south end of campus, so point for South
+> More restaurants on Durant, Telegraph etc so point for South.
+>
+> North is where the Soda and Cory lab buildings for CS and EE are, GPB and LKS for CNR and Bio, so point for North. Much less riffraff (not always) on the north end, so another point for North.
+
+*Inspection:* exactly what a good chunk looks like — one author's complete, information-dense comparison, retrievable on its own for any "northside vs southside" query.
+
+**Chunk 4** — source: `reddit_rent-prices` (comment, 2023)
+
+> [How much do you pay in rent? I want some rent transparency so I know I'm not getting scammed] 950 for a single room half a block north of campus (utilities all included)
+
+*Inspection:* a 76-char body kept by the top-level exception — this is precisely the data-bearing one-liner the exception exists for. Without the `[thread title]` prefix, "950 for a single room" would embed with almost no topical signal.
+
+**Chunk 5** — source: `reddit_apartment-timeline` (comment, 2022, score 22)
+
+> [Good time to look for housing?] I came in July and had three offers from landlords I found on calrental within a week. One was a room in an old lady's house for $900 a month 20 min walk north of campus, one was an efficiency in El Cerrito hills for $1450, and another was a maid room in a rich family house with no use of their kitchen allowed for $1300 (yikes). […] Definitely wouldn't use Cal rental or any other school-oriented platforms after that one time, CL and local FB groups is the way. […]
+
+*Inspection:* high-value chunk — concrete prices, timing, and platform advice in one author's experience; abridged here with `[…]` for the README, stored in full (910 chars including the title prefix) in the index.
 
 ---
 
