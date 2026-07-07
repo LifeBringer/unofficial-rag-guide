@@ -120,7 +120,7 @@ flowchart LR
         E --> R
     end
     subgraph Generation["5 · Generation — query.py → app.py"]
-        R --> G["Groq · llama-3.3-70b-versatile<br/>grounded prompt: answer ONLY from<br/>context, else refuse · cite sources"]
+        R --> G["Groq · llama-3.3-70b-versatile<br/>(auto-fallback: same model via HF router<br/>when api.groq.com is IP-blocked)<br/>grounded prompt: answer ONLY from<br/>context, else refuse · cite sources"]
         G --> OUT["answer + source list<br/>(Gradio UI)"]
     end
 ```

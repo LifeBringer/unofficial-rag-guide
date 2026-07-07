@@ -140,72 +140,108 @@ Relevance explanation: the top hit *is* the canonical comparison (the thread's 1
 
 ## Grounded Generation
 
-<!-- Explain how your system enforces grounding — how does it prevent the LLM from answering
-     beyond the retrieved documents?
-     Describe both your system prompt (what instruction you gave the model) and any structural
-     choices (e.g., how you formatted the context, whether you filtered low-relevance chunks).
-     Do not just say "I told it to use the documents" — show the actual instruction or explain
-     the mechanism. -->
+Generation runs on Groq's `llama-3.3-70b-versatile` (course default). Because the network this project was built on blocks `api.groq.com` at the IP level (403 for *any* key — verified with a deliberately invalid one), `query.py` automatically falls back to the **identical model** (`meta-llama/Llama-3.3-70B-Instruct`) served through Hugging Face's OpenAI-compatible Inference Providers router. With a working Groq key on a normal network, the fallback never runs.
 
-**System prompt grounding instruction:**
+**System prompt grounding instruction:** the actual system prompt (see `SYSTEM_PROMPT` in `query.py`):
 
-**How source attribution is surfaced in the response:**
+> You are The Unofficial Guide, answering questions about housing at UC Berkeley using ONLY the numbered sources provided in the user message. […]
+> 1. Use only information stated in the sources. Never add facts from your general knowledge, even if you are confident they are true.
+> 2. If the sources do not contain enough information to answer the question, reply with exactly: "I don't have enough information on that in my documents." — do not attempt a partial guess from general knowledge.
+> 3. Cite every claim with its source number in brackets, e.g. [Source 2].
+> 4. These are student opinions, not verified facts: attribute them ("one commenter reports…") and mention the year when the sources span different years or the info could be dated (e.g. prices).
+> 5. If sources disagree, present both sides with their citations.
+
+Structurally, the retrieved chunks are injected as a numbered context block — `[Source 1] (r/berkeley thread "TITLE", YEAR)` followed by the chunk text — so every citation the model makes maps to a specific chunk with a year attached. The exact-refusal-phrase rule makes refusals detectable and keeps them from drifting into "however, generally speaking…" answers.
+
+One deliberate *non*-mechanism: there is **no distance-threshold refusal gate**. Milestone 4 measurements showed near-domain off-scope queries ("best boba near campus?", distance 0.448) are indistinguishable by distance from hard on-topic queries ("decline my housing offer", 0.44), so a cutoff would either miss off-scope queries or reject legitimate ones. Refusal is the LLM's job, given the grounding prompt — and the out-of-scope tests below show it works, including on that exact boba query.
+
+**How source attribution is surfaced in the response:** twice, independently. (1) The model cites `[Source N]` markers inline per the prompt. (2) The `sources` list under every answer is **built in code** from the retrieval metadata of the chunks actually placed in the context window — numbered exactly as the model saw them — so attribution is guaranteed even if the model forgot to cite. The LLM has no ability to add or remove entries from that list.
+
+**Known grounding limits (from adversarial testing):** I red-teamed the system with 15 adversarial probes (general-knowledge bait, false-premise questions, prompt injection). It held on 12/15 — including refusing "What is the capital of France?", correcting "Since BART is free for Cal students…" from the corpus, and rejecting persona-override injections. Three honest weaknesses: (1) under a false-premise question about the lottery it asserted a *plausible but uncited* negation and pinned it to a real source number whose chunk says nothing about the lottery — the code guarantees the source *list* is real, but cannot guarantee every *claim* actually appears in its cited chunk (see Failure Case Analysis); (2) a direct "ignore your instructions" injection was resisted but answered with meta-commentary instead of the exact refusal phrase, leaking one generic sentence; (3) one answer conflated two co-ops mentioned in the same thread (attributed a POC resident's experience to Casa Zimbabwe). Grounding enforces *provenance of context*, not *fidelity of every generated sentence* — a limitation worth stating plainly.
 
 ---
 
 ## Example Responses
 
-<!-- Provide at least 2 grounded responses (query + response + source attribution)
-     and 1 out-of-scope query showing your system's refusal.
-     All entries must be text — not screenshots. -->
+All three are verbatim `python query.py "<question>"` outputs.
 
 **Grounded response 1**
 
-Query:
+Query: `What happens if I decline my UC Berkeley housing offer?`
 
 Response:
 
-Source attribution:
+> One commenter reports that if you decline your UC Berkeley housing offer, you will have about 1.5 months to secure housing for yourself, which can be a "nightmare" [Source 1, 2019].
 
----
+Source attribution (in the output text, built programmatically from retrieval metadata):
+
+> Retrieved from:
+> • [Source 1] reddit_housing-lottery — "How exactly does housing work?" (2019) https://www.reddit.com/r/berkeley/comments/bf0l31/how_exactly_does_housing_work/
+> • [Source 2] reddit_apartment-timeline — "Good time to look for housing?" (2022) …
+> • [Source 3] reddit_freshman-dorms — "URGENT: how to switch out of 'blackwell'" (2022) …
+> *(+2 more context sources listed in the actual output)*
 
 **Grounded response 2**
 
-Query:
+Query: `When should I start looking for an off-campus apartment for the fall?`
 
 Response:
 
+> One commenter reports that it's not necessary to secure housing as early as January or February [Source 5]. The Off-Campus Housing team recommends starting the search 6-8 weeks before the move-in date [Source 3], while another student suggests starting to look in March and April [Source 4]. Additionally, one guide advises waiting at least until April to start the search and not to secure housing until the desired start date is available [Source 5].
+
 Source attribution:
 
----
+> Retrieved from:
+> • [Source 1] reddit_apartment-timeline — "Good time to look for housing?" (2022) https://www.reddit.com/r/berkeley/comments/t16je2/good_time_to_look_for_housing/
+> • [Source 2] web_offcampus_search_tips — "Off-Campus Housing Search Tips" (2024) https://life.berkeley.edu/off-campus-housing-search-tips/
+> • [Source 3] web_housing_what_to_expect — "Finding Housing Off Campus: What to Expect" (2024) https://life.berkeley.edu/finding-housing-what-to-expect/
+> *(+2 more context sources listed in the actual output)*
+
+Note how rule 5 of the grounding prompt shows up here: the corpus genuinely disagrees about timing (the 2022 Reddit thread says start in February; the student-life guides say 6–8 weeks out is fine), and the answer presents both camps with citations instead of picking one.
 
 **Out-of-scope query**
 
-Query:
+Query: `What's the best boba place near campus?`
 
 System response (refusal):
+
+> I don't have enough information on that in my documents.
+
+This is the hard refusal case on purpose: retrieval still returns *something* (neighborhood-overview chunks mentioning Telegraph Avenue cafes, at distance 0.448 — nearly identical to legitimate queries), but the model correctly judges that nothing retrieved answers the actual question. A second probe, `Who is the best professor for CS 61A?`, refuses identically.
 
 ---
 
 ## Query Interface
 
-<!-- Describe your query interface: what are the input fields, what does the output look like?
-     Then provide a complete sample interaction transcript showing a real exchange. -->
+A Gradio web UI (`python app.py` → http://localhost:7860). There is also a CLI (`python query.py "<question>"`) used for the retrieval tests and evaluation above.
 
 **Input fields:**
 
+- **Your question** — a single free-text box (submit with Enter or the **Ask** button).
+- Five clickable example questions below the box for instant demoing.
+
 **Output format:**
+
+- **Answer** — the grounded response with inline `[Source N]` citations.
+- **Retrieved from** — the programmatic source list: `[Source N] document — "thread title" (year) URL`, numbered to match the citations.
+- **Retrieved chunks (what the model actually saw)** — a collapsed accordion showing the raw top-5 chunks with their cosine distances, for transparency and debugging.
 
 ---
 
 **Sample Interaction Transcript**
 
-<!-- Show a complete query → response exchange as it actually appears in your interface.
-     Must be text — not a screenshot. -->
+As it appears in the interface (Answer and Retrieved from fields, verbatim):
 
-> **User:** 
+> **User:** What happens if I decline my UC Berkeley housing offer?
 
-> **System:** 
+> **System (Answer):** One commenter reports that if you decline your UC Berkeley housing offer, you will have about 1.5 months to secure housing for yourself, which can be a "nightmare" [Source 1, 2019].
+>
+> **System (Retrieved from):**
+> • [Source 1] reddit_housing-lottery — "How exactly does housing work?" (2019) https://www.reddit.com/r/berkeley/comments/bf0l31/how_exactly_does_housing_work/
+> • [Source 2] reddit_apartment-timeline — "Good time to look for housing?" (2022) https://www.reddit.com/r/berkeley/comments/t16je2/good_time_to_look_for_housing/
+> • [Source 3] reddit_freshman-dorms — "URGENT: how to switch out of 'blackwell'" (2022) https://www.reddit.com/r/berkeley/comments/v1xbix/urgent_how_to_switch_out_of_blackwell/
+> • [Source 4] web_housing_what_to_expect — "Finding Housing Off Campus: What to Expect" (2024) https://life.berkeley.edu/finding-housing-what-to-expect/
+> • [Source 5] reddit_subletting — "Subletter denies me of housing last minute…" (2022) https://www.reddit.com/r/berkeley/comments/upw41v/subletter_denies_me_of_housing_last_minute/
 
 ---
 
