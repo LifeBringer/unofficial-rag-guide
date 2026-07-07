@@ -1,0 +1,106 @@
+{
+  "source_type": "reddit_thread",
+  "topic": "northside-southside",
+  "collected_via": "PullPush archive API (api.pullpush.io)",
+  "query_used": "northside vs southside",
+  "submission": {
+    "id": "f4iex8",
+    "title": "Pros/cons of living in northside vs southside:",
+    "selftext": "I'm a freshman looking for housing- have options in northside and southside.  I currently live in southside. \n\nWhat are the pros/cons living in both? Which is generally a better place to live? I'm an Econ/Stats major, so I have classes both in northside or southside.",
+    "author": "Educational_Army",
+    "score": 6,
+    "num_comments": 10,
+    "created_utc": 1581812391,
+    "permalink": "/r/berkeley/comments/f4iex8/proscons_of_living_in_northside_vs_southside/"
+  },
+  "comments": [
+    {
+      "id": "fhrc08p",
+      "author": "[deleted]",
+      "body": "[deleted]",
+      "score": 24,
+      "created_utc": 1581822453,
+      "parent_id": "t3_f4iex8"
+    },
+    {
+      "id": "fhqxxtd",
+      "author": "itsomma",
+      "body": "Northside is a lot more quiet and feels a lot safer (not sure if it actually is but I rarely see police or shady characters). Depending on where you are, its not too far from some decent but more expensive food options that tend to cater more to the wealthier suburban demographic. There’s also a Safeway close by which is closer to more of Northside than the Safeway on College is to Southside. It’s more hilly.",
+      "score": 15,
+      "created_utc": 1581813384,
+      "parent_id": "t3_f4iex8"
+    },
+    {
+      "id": "fhqwwp0",
+      "author": "wheezing_cauliflower",
+      "body": "northside more residential, south and downtown more urban",
+      "score": 10,
+      "created_utc": 1581812875,
+      "parent_id": "t3_f4iex8"
+    },
+    {
+      "id": "fhqx40l",
+      "author": "Reformed_Narcissist",
+      "body": "Northside is typically cleaner with less homeless people.\n\nBut it doesn't have as many activities happening.",
+      "score": 9,
+      "created_utc": 1581812992,
+      "parent_id": "t3_f4iex8"
+    },
+    {
+      "id": "fhr0ssi",
+      "author": "JsKingBoo",
+      "body": "in recent memory, during the PGE outages northside got fucked but southside was unscathed",
+      "score": 9,
+      "created_utc": 1581814685,
+      "parent_id": "t3_f4iex8"
+    },
+    {
+      "id": "fhr3q68",
+      "author": "ProfessorPlum168",
+      "body": "RSF is at the south end of campus, so point for South\nMore restaurants on Durant, Telegraph etc so point for South.\n\nNorth is where the Soda and Cory lab buildings for CS and EE are, GPB and LKS for CNR and Bio, so point for North.  Much less riffraff (not always) on the north end, so another point for North.",
+      "score": 7,
+      "created_utc": 1581816561,
+      "parent_id": "t3_f4iex8"
+    },
+    {
+      "id": "fhrmo4f",
+      "author": "justagenericname1",
+      "body": "Southside is more fun; Northside feels safer",
+      "score": 3,
+      "created_utc": 1581830745,
+      "parent_id": "t3_f4iex8"
+    },
+    {
+      "id": "fhrphci",
+      "author": "a_triggered_cabbage",
+      "body": "Northside is super quiet! Can hear crickets chirping at night",
+      "score": 3,
+      "created_utc": 1581833517,
+      "parent_id": "t3_f4iex8"
+    },
+    {
+      "id": "fhwmw3x",
+      "author": "cycomachead",
+      "body": "This is a good summary; I can't find the crime maps I used when looking at places, but it generally tracked with population—northside is much less dense.\n\nI loved living on Northside and would happily move there again. (FWIW, I am predisposed to spending too much money on food and have no regrets! :))\n\nI'll add that where I lived (Hearst and Oxford, roughly. For 4 years) I felt more than close enough to get to BART or even a decent but not prohibitive walk to Artichoke's at 1am, and made frequent cross-campus late night walks from Southside and it never bothered me... but, YMMV!",
+      "score": 2,
+      "created_utc": 1581921231,
+      "parent_id": "t1_fhqxxtd"
+    },
+    {
+      "id": "fiv8hhj",
+      "author": "amberchavers",
+      "body": "my freshman year i lived in unit 3 and for the past 3 years i've lived on northside and I love it much more than southside. its a lot quieter and close to safeway and closer to campus (i'm in cnr tho so most of my classes are near mulford) and i feel safer at night and its just a lot prettier and closer to the rose garden and indian rock and grotto and stuff like that. Only downside is that a lot of my friends live in southside so its quite a trek",
+      "score": 2,
+      "created_utc": 1582755788,
+      "parent_id": "t3_f4iex8"
+    },
+    {
+      "id": "fhut417",
+      "author": "Winstonp00",
+      "body": "We got generators",
+      "score": 1,
+      "created_utc": 1581889830,
+      "parent_id": "t1_fhr0ssi"
+    }
+  ]
+}

@@ -1,0 +1,690 @@
+{
+  "source_type": "reddit_thread",
+  "topic": "rent-prices",
+  "collected_via": "PullPush archive API (api.pullpush.io)",
+  "query_used": "fair price rent",
+  "submission": {
+    "id": "11503dk",
+    "title": "How much do you pay in rent? I want some rent transparency so I know I’m not getting scammed",
+    "selftext": "I’m out of state so I really have no idea what I’m getting myself into rent wise. How do I know I’m not paying a fair price\n\nUpdate: thank you everyone this was really helpful!",
+    "author": "mediocre_angel",
+    "score": 85,
+    "num_comments": 75,
+    "created_utc": 1676674349,
+    "permalink": "/r/berkeley/comments/11503dk/how_much_do_you_pay_in_rent_i_want_some_rent/"
+  },
+  "comments": [
+    {
+      "id": "j8z33wz",
+      "author": "StephanNoodles",
+      "body": "1B1B 2500 a block from campus for me.",
+      "score": 42,
+      "created_utc": 1676678067,
+      "parent_id": "t3_11503dk"
+    },
+    {
+      "id": "j8zt0o6",
+      "author": "CrepesSuzzette",
+      "body": "1000 (incl all utilities and fees) for a single room in a traphouse about 6 blocks south of campus (think willard park area).",
+      "score": 34,
+      "created_utc": 1676690696,
+      "parent_id": "t3_11503dk"
+    },
+    {
+      "id": "j8zr8gp",
+      "author": "mister_fishy_fish",
+      "body": "$1656 for a studio one block from campus on northside. The building is older, but worth it for the price and convenience of location (close to campus, grocery stores, and in a quiet location).",
+      "score": 33,
+      "created_utc": 1676689748,
+      "parent_id": "t3_11503dk"
+    },
+    {
+      "id": "j8z6ocx",
+      "author": "Butterscotch4354",
+      "body": "This is as accurate as some ChatGPT answers",
+      "score": 32,
+      "created_utc": 1676679708,
+      "parent_id": "t1_j8z24fb"
+    },
+    {
+      "id": "j8zgeok",
+      "author": "[deleted]",
+      "body": "[deleted]",
+      "score": 23,
+      "created_utc": 1676684337,
+      "parent_id": "t3_11503dk"
+    },
+    {
+      "id": "j90ikzt",
+      "author": "Trick_Tangerine9901",
+      "body": "How tf do yall pay for this??",
+      "score": 21,
+      "created_utc": 1676707506,
+      "parent_id": "t1_j8zgeok"
+    },
+    {
+      "id": "j906u1p",
+      "author": "dontbeevian",
+      "body": "You should also include the sqft and whether the 1B is communal or not, cuz that sounds a bit too good to be true.\n\nI’m 2.3 miles away from campus 500sqft studio, 2870.",
+      "score": 16,
+      "created_utc": 1676698692,
+      "parent_id": "t1_j8z33wz"
+    },
+    {
+      "id": "j8zzmw5",
+      "author": "mediocre_angel",
+      "body": "breaking: random redditor lacks comprehension skills to understand why students ask for rent prices amidst extremely unpredictable fluctuating/rising economy before peak house hunting season!",
+      "score": 14,
+      "created_utc": 1676694325,
+      "parent_id": "t1_j8zynav"
+    },
+    {
+      "id": "j900m90",
+      "author": "Loud-Nefariousness66",
+      "body": "I work full time in addition to going to school full time. I also split rent with my partner who makes decent money! I would say look into a roommate, it eases a lot of stress not having to pay for everything alone.",
+      "score": 13,
+      "created_utc": 1676694897,
+      "parent_id": "t1_j8zzwp6"
+    },
+    {
+      "id": "j8za5co",
+      "author": "here_4_cat_memes",
+      "body": "During my time at Berkeley, I was paying between 1500-2300. The 1500 rent was for a private single room in a 4 bed, 2 bath apartment. The 2300 rent was for a single in a 2 bed, 1 bath apartment. If you’re looking for a single, expect to pay around 2000 cause rent is just skyrocketing. Can’t comment on doubles or triples since I never had those",
+      "score": 12,
+      "created_utc": 1676681317,
+      "parent_id": "t3_11503dk"
+    },
+    {
+      "id": "j8zoyxt",
+      "author": "Loud-Nefariousness66",
+      "body": "I live in oakland-paying 2,300 for a 1b1b including parking and utilities",
+      "score": 11,
+      "created_utc": 1676688591,
+      "parent_id": "t3_11503dk"
+    },
+    {
+      "id": "j8zlni0",
+      "author": "answer_610",
+      "body": "3200 for a 2b1b about 15 minutes from campus; not too far from downtown and its near trader joe's so its not so bad.",
+      "score": 10,
+      "created_utc": 1676686936,
+      "parent_id": "t3_11503dk"
+    },
+    {
+      "id": "j8zzm7p",
+      "author": "c9zellsis",
+      "body": "800 single 2 blocks",
+      "score": 10,
+      "created_utc": 1676694314,
+      "parent_id": "t3_11503dk"
+    },
+    {
+      "id": "j90055e",
+      "author": "mediocre_angel",
+      "body": "oh no doubt about that. that’s why i asked for rent transparency to set my standards and budget realistically",
+      "score": 8,
+      "created_utc": 1676694622,
+      "parent_id": "t1_j8zzv64"
+    },
+    {
+      "id": "j8zmpl6",
+      "author": "amazonbabe504",
+      "body": "$1300 for a single room in a 2bed/1ba about a 15-20 min walk from campus, 1 block a bus line to campus and grocery store",
+      "score": 8,
+      "created_utc": 1676687462,
+      "parent_id": "t3_11503dk"
+    },
+    {
+      "id": "j8zzwp6",
+      "author": "DizzyTune655",
+      "body": "Can I ask how you afford? Student loans? Work? I’m planning to move closer to campus but I’m nervous about rent.",
+      "score": 7,
+      "created_utc": 1676694484,
+      "parent_id": "t1_j8zoyxt"
+    },
+    {
+      "id": "j8zn476",
+      "author": "Resource-National",
+      "body": "3200 for a nice new construction 2b1ba in the Berkeley hills about 15 min walk from campus",
+      "score": 7,
+      "created_utc": 1676687666,
+      "parent_id": "t3_11503dk"
+    },
+    {
+      "id": "j8zzv64",
+      "author": "oaklandsunshine",
+      "body": "You are for sure getting scammed. There’s nothing you can do about it unless you’re paying your year in full if not there isn’t any negotiation to be had.",
+      "score": 6,
+      "created_utc": 1676694460,
+      "parent_id": "t3_11503dk"
+    },
+    {
+      "id": "j8zi031",
+      "author": "kingfucius",
+      "body": "1b1bath about 1-2 miles away from campus, 2540 a month, rent controlled.",
+      "score": 6,
+      "created_utc": 1676685125,
+      "parent_id": "t3_11503dk"
+    },
+    {
+      "id": "j90b53b",
+      "author": "happynsad555",
+      "body": "$3152 for a 2b/2ba apartment in a luxury building built for techies near Twitter/Dolby HQ in SF. Washer/dryer, dishwasher, gym in the building, and there are community events too. 2 minutes from BART. 1000 sq ft. \n\nI use to pay $2075 for a 1b/1ba apartment in North Berkeley before I moved. Parking included, patio, 600 sq ft.",
+      "score": 5,
+      "created_utc": 1676701723,
+      "parent_id": "t3_11503dk"
+    },
+    {
+      "id": "j90iuwn",
+      "author": "ColdTurkey27",
+      "body": "I'm three blocks from campus and pay 2400 for your same square footage, but it's a studio.",
+      "score": 4,
+      "created_utc": 1676707729,
+      "parent_id": "t1_j906u1p"
+    },
+    {
+      "id": "j902a3j",
+      "author": "Few_Background5187",
+      "body": "2200 for a one bedroom bro 😎 one 🧼",
+      "score": 4,
+      "created_utc": 1676695860,
+      "parent_id": "t3_11503dk"
+    },
+    {
+      "id": "j90t2jo",
+      "author": "Anxious_Temporary381",
+      "body": "$575 for a 63 sq foot concerted closet in a rent controlled house. go bears",
+      "score": 4,
+      "created_utc": 1676716392,
+      "parent_id": "t3_11503dk"
+    },
+    {
+      "id": "j90b6b9",
+      "author": "SuddenFuel3135",
+      "body": "I had 2 roomies and paid $1500 for my single room in a 3bed 1ba unit at Panoramic on Telegraph. Total unit is $4850/mo not including utilities— roomie w biggest room of the 3 that had windows facing street paid $1700, medium room btwn paid $1650. Priceyyyy (but granted it was really going for a fancy modern aesthetic/ was just built recently).",
+      "score": 4,
+      "created_utc": 1676701748,
+      "parent_id": "t3_11503dk"
+    },
+    {
+      "id": "j90fpbo",
+      "author": "lmaothatsunfortunate",
+      "body": "$1550 studio includes water + garbage 1 block from campus, old building tho",
+      "score": 4,
+      "created_utc": 1676705214,
+      "parent_id": "t3_11503dk"
+    },
+    {
+      "id": "j904a2m",
+      "author": "MathematicianIcy7625",
+      "body": "Currently have a single room in a 2bed/1 bath apartment (with no living room, but large bedrooms) for $1225 a month. 2 blocks from campus (~10 min walk)",
+      "score": 4,
+      "created_utc": 1676697058,
+      "parent_id": "t3_11503dk"
+    },
+    {
+      "id": "j90hi89",
+      "author": "tortoisegirl25",
+      "body": "Ooo where is this!",
+      "score": 3,
+      "created_utc": 1676706650,
+      "parent_id": "t1_j8zr8gp"
+    },
+    {
+      "id": "j90lq3e",
+      "author": "justagenericname1",
+      "body": "$1800 for a Southside studio. About half a mile from campus.",
+      "score": 3,
+      "created_utc": 1676710101,
+      "parent_id": "t3_11503dk"
+    },
+    {
+      "id": "j906okg",
+      "author": "spamburger99",
+      "body": "What are the pros and cons to your living situation? Is it quiet enough for you to focus on studying and getting good sleep.",
+      "score": 3,
+      "created_utc": 1676698596,
+      "parent_id": "t1_j8z33wz"
+    },
+    {
+      "id": "j90b07t",
+      "author": "SuddenFuel3135",
+      "body": "uhh where????",
+      "score": 3,
+      "created_utc": 1676701621,
+      "parent_id": "t1_j8zzm7p"
+    },
+    {
+      "id": "j90k3wq",
+      "author": "xosarasparklesxo",
+      "body": "Financial aid helps A LOT",
+      "score": 3,
+      "created_utc": 1676708757,
+      "parent_id": "t1_j90ikzt"
+    },
+    {
+      "id": "j90bx1n",
+      "author": "Leather_Sir_6245",
+      "body": "I got a 1B/1bath apt for $1895 but i split it with a roommate and it’s a 15 min walk from campus.",
+      "score": 3,
+      "created_utc": 1676702304,
+      "parent_id": "t3_11503dk"
+    },
+    {
+      "id": "j92rfdj",
+      "author": "Icy_Calligrapher1289",
+      "body": "Prob coop",
+      "score": 3,
+      "created_utc": 1676751093,
+      "parent_id": "t1_j90b07t"
+    },
+    {
+      "id": "j92hul6",
+      "author": "TheHerpSalad",
+      "body": "2bd/1ba, just under 1000 sqft, 2 story townhouse, one shared wall, in the University Village, 3.5 miles from campus, but bus comes through all day, but I ride my bike instead. \n\n2100/mo.",
+      "score": 3,
+      "created_utc": 1676747042,
+      "parent_id": "t3_11503dk"
+    },
+    {
+      "id": "j900xe5",
+      "author": "cubbiecrunch",
+      "body": "single in a 2b 1b near people’s park $1300",
+      "score": 2,
+      "created_utc": 1676695074,
+      "parent_id": "t3_11503dk"
+    },
+    {
+      "id": "j90sj3m",
+      "author": "Casual-Fapper",
+      "body": "Can u pm me the apartment?",
+      "score": 2,
+      "created_utc": 1676715930,
+      "parent_id": "t1_j904a2m"
+    },
+    {
+      "id": "j90bc62",
+      "author": "SuddenFuel3135",
+      "body": "not too awful considering the alternatives",
+      "score": 2,
+      "created_utc": 1676701871,
+      "parent_id": "t1_j8zjyl6"
+    },
+    {
+      "id": "j92hiox",
+      "author": "meister2983",
+      "body": "You can generally look at zillow rental estimates to see reasonable numbers. Rent varies a lot by convenience.",
+      "score": 2,
+      "created_utc": 1676746904,
+      "parent_id": "t3_11503dk"
+    },
+    {
+      "id": "j94rif6",
+      "author": "AnnonBayBridge",
+      "body": "Berkeley people should know that you can actually look up rents across the city with just the address!\n\nhttps://rentregistry.cityofberkeley.info/#/homepage",
+      "score": 2,
+      "created_utc": 1676786128,
+      "parent_id": "t3_11503dk"
+    },
+    {
+      "id": "j94rnwa",
+      "author": "AnnonBayBridge",
+      "body": "If you’re curious you can look up what others in your building are paying. \n\nhttps://rentregistry.cityofberkeley.info/#/homepage",
+      "score": 2,
+      "created_utc": 1676786230,
+      "parent_id": "t1_j8zr8gp"
+    },
+    {
+      "id": "j90j8ig",
+      "author": "dontbeevian",
+      "body": "This sounds about right.",
+      "score": 2,
+      "created_utc": 1676708044,
+      "parent_id": "t1_j90iuwn"
+    },
+    {
+      "id": "j97sqss",
+      "author": "Resource-National",
+      "body": "As a single parent w no help from anyone, student loans.",
+      "score": 2,
+      "created_utc": 1676845643,
+      "parent_id": "t1_j8zzwp6"
+    },
+    {
+      "id": "j900h1y",
+      "author": "_unconventional_oven",
+      "body": "Idk I pay 1300 for my single",
+      "score": 1,
+      "created_utc": 1676694812,
+      "parent_id": "t1_j8zfsyx"
+    },
+    {
+      "id": "j902gn5",
+      "author": "BbyDx",
+      "body": "$2500 2b 1b, 20ish min walk from west side of campus near VLSB",
+      "score": 1,
+      "created_utc": 1676695965,
+      "parent_id": "t3_11503dk"
+    },
+    {
+      "id": "j8zjyl6",
+      "author": "fatcatluvr",
+      "body": "3 minutes from the RSF im paying 850 for a double !",
+      "score": 1,
+      "created_utc": 1676686091,
+      "parent_id": "t3_11503dk"
+    },
+    {
+      "id": "j903mky",
+      "author": "Equal-Structure4099",
+      "body": "Which apartment is the 1500 one?",
+      "score": 1,
+      "created_utc": 1676696662,
+      "parent_id": "t1_j8za5co"
+    },
+    {
+      "id": "j904d0o",
+      "author": "leon_russian",
+      "body": "Used to be $1000 for single room, 13 minute walk from campus",
+      "score": 1,
+      "created_utc": 1676697111,
+      "parent_id": "t3_11503dk"
+    },
+    {
+      "id": "j90hmv5",
+      "author": "tortoisegirl25",
+      "body": "My rent is 2500 for a 600sf 1bd with the living room converted into a private room. The living room is mine and it’s completely closed off from the entry and kitchen and has its own door, which is a pretty good deal. It’s by Clark Kerr.",
+      "score": 1,
+      "created_utc": 1676706749,
+      "parent_id": "t3_11503dk"
+    },
+    {
+      "id": "j92b502",
+      "author": "fatcatluvr",
+      "body": "yes now i’m realizing ….",
+      "score": 1,
+      "created_utc": 1676744288,
+      "parent_id": "t1_j90bc62"
+    },
+    {
+      "id": "j92baof",
+      "author": "fatcatluvr",
+      "body": "well it’s like a little over 4,000 for 3bd1b but there’s 5 people in our apt !",
+      "score": 1,
+      "created_utc": 1676744354,
+      "parent_id": "t1_j928o2p"
+    },
+    {
+      "id": "j94usrp",
+      "author": "mediocre_angel",
+      "body": "this is so helpful thank you for sharing this",
+      "score": 1,
+      "created_utc": 1676788426,
+      "parent_id": "t1_j94rif6"
+    },
+    {
+      "id": "j900yik",
+      "author": "VeganInstigator",
+      "body": "$1200 for 3bd2b single, ~3 blocks south of Bancroft",
+      "score": 1,
+      "created_utc": 1676695093,
+      "parent_id": "t3_11503dk"
+    },
+    {
+      "id": "j90467c",
+      "author": "Jon-3",
+      "body": "2695 for 2bed room 1.25 bath 700 sqft\nMile from campus",
+      "score": 1,
+      "created_utc": 1676696993,
+      "parent_id": "t3_11503dk"
+    },
+    {
+      "id": "j90jrpl",
+      "author": "MrTreadmill",
+      "body": "1280 for just my portion of a 3 bedroom apartment 1 mile south of campus",
+      "score": 1,
+      "created_utc": 1676708482,
+      "parent_id": "t3_11503dk"
+    },
+    {
+      "id": "j928o2p",
+      "author": "quantum_pheonix",
+      "body": "A double? As in to share a rented room? Not for the whole room itself? $850 to share a room and  $1700 for a room?",
+      "score": 1,
+      "created_utc": 1676743266,
+      "parent_id": "t1_j8zjyl6"
+    },
+    {
+      "id": "j92u0kp",
+      "author": "Mikebartgeier",
+      "body": "A master bedroom in Oakland with private bathroom and all utilities included for 1450",
+      "score": 1,
+      "created_utc": 1676752213,
+      "parent_id": "t3_11503dk"
+    },
+    {
+      "id": "j92yh2k",
+      "author": "Full-Grapefruit-3404",
+      "body": "https://bsc.coop/housing/academic-year-rates",
+      "score": 1,
+      "created_utc": 1676754161,
+      "parent_id": "t3_11503dk"
+    },
+    {
+      "id": "j971m0v",
+      "author": "itakeitintheasus",
+      "body": "1B1B about 3500 amortized (they gave me one month free on my lease)",
+      "score": 1,
+      "created_utc": 1676834264,
+      "parent_id": "t3_11503dk"
+    },
+    {
+      "id": "j9dzz96",
+      "author": "telltale-tilly",
+      "body": "$760 for a double in a 2b1b in southside",
+      "score": 1,
+      "created_utc": 1676958392,
+      "parent_id": "t3_11503dk"
+    },
+    {
+      "id": "jklnayr",
+      "author": "ayy_fam",
+      "body": "Might be a neighbor in the UVA soon, how does rent work? Any financial aid? Do you just shell out a whole 2k every month? It's month to month so I figured it works different than fin aid taking a chunk out.",
+      "score": 1,
+      "created_utc": 1684388354.0,
+      "parent_id": "t1_j92hul6"
+    },
+    {
+      "id": "j90i8y4",
+      "author": "justsaysike",
+      "body": "2BD1Bath (no living room, but two enclosed rooms)  1 block from campus 2450$ + electricity",
+      "score": 1,
+      "created_utc": 1676707235,
+      "parent_id": "t3_11503dk"
+    },
+    {
+      "id": "j90beaj",
+      "author": "SuddenFuel3135",
+      "body": "lies",
+      "score": 1,
+      "created_utc": 1676701915,
+      "parent_id": "t1_j8z24fb"
+    },
+    {
+      "id": "j90q5hk",
+      "author": "earlthehurl",
+      "body": "$500 per month for a private bedroom in a 3BR apartment. I live 3 blocks from campus in the Berkeley student coops. Utilities are included",
+      "score": 1,
+      "created_utc": 1676713890,
+      "parent_id": "t3_11503dk"
+    },
+    {
+      "id": "j90k0kh",
+      "author": "xosarasparklesxo",
+      "body": "$2400",
+      "score": 1,
+      "created_utc": 1676708683,
+      "parent_id": "t3_11503dk"
+    },
+    {
+      "id": "j92tsou",
+      "author": "x64bit",
+      "body": "600-700 2bd, 3 ppl but i get my own room. definitely on the cheap end though most ppl pay like 800-1000 for the same split",
+      "score": 1,
+      "created_utc": 1676752118,
+      "parent_id": "t3_11503dk"
+    },
+    {
+      "id": "j92lo3z",
+      "author": "childoflilith",
+      "body": "Private 1 bed 1 bath a block from campus, 1450",
+      "score": 1,
+      "created_utc": 1676748633,
+      "parent_id": "t3_11503dk"
+    },
+    {
+      "id": "j936bai",
+      "author": "JJGates_",
+      "body": "950 for a single room half a block north of campus (utilities all included)",
+      "score": 1,
+      "created_utc": 1676757635,
+      "parent_id": "t3_11503dk"
+    },
+    {
+      "id": "j95wuo3",
+      "author": "AnnonBayBridge",
+      "body": "Please continue to share this link so that others are also aware! Knowledge is power!",
+      "score": 1,
+      "created_utc": 1676816817,
+      "parent_id": "t1_j94usrp"
+    },
+    {
+      "id": "j8zb17r",
+      "author": "[deleted]",
+      "body": "[deleted]",
+      "score": 1,
+      "created_utc": 1676681732,
+      "parent_id": "t1_j8z24fb"
+    },
+    {
+      "id": "j8zfpgb",
+      "author": "[deleted]",
+      "body": "[deleted]",
+      "score": 1,
+      "created_utc": 1676683992,
+      "parent_id": "t3_11503dk"
+    },
+    {
+      "id": "j902703",
+      "author": "[deleted]",
+      "body": "[deleted]",
+      "score": 1,
+      "created_utc": 1676695810,
+      "parent_id": "t3_11503dk"
+    },
+    {
+      "id": "j90po2h",
+      "author": "[deleted]",
+      "body": "[deleted]",
+      "score": 1,
+      "created_utc": 1676713473,
+      "parent_id": "t3_11503dk"
+    },
+    {
+      "id": "j90rozj",
+      "author": "[deleted]",
+      "body": "[removed]",
+      "score": 1,
+      "created_utc": 1676715213,
+      "parent_id": "t3_11503dk"
+    },
+    {
+      "id": "j921tle",
+      "author": "[deleted]",
+      "body": "[deleted]",
+      "score": 1,
+      "created_utc": 1676740493,
+      "parent_id": "t3_11503dk"
+    },
+    {
+      "id": "j92ut0o",
+      "author": "AnyTransportation301",
+      "body": "$1200 for a 90 sq ft double room in a 2bd1bath (4 ppl) 8 min walk from campus\n\nTell me how bad it is",
+      "score": 1,
+      "created_utc": 1676752558,
+      "parent_id": "t3_11503dk"
+    },
+    {
+      "id": "j97sndc",
+      "author": "Resource-National",
+      "body": "Loans",
+      "score": 1,
+      "created_utc": 1676845602,
+      "parent_id": "t1_j90ikzt"
+    },
+    {
+      "id": "jkn9t6b",
+      "author": "TheHerpSalad",
+      "body": "All happens on CalCentral. \n\nFinancial aid is given out as \"gift aid\", once per semester, it'll first apply to any balances you have on your CalCentral account, so if you have a month's rent due, it'll apply towards it. The balance will then be refunded directly to you by check or direct deposit - if you have it set up. I recommend setting that up ASAP, as you don't want to be waiting for a paper check. Otherwise, you'll receive a rent bill which usually shows up in the middle of the month on CalCentral and you'll pay rent from there.",
+      "score": 1,
+      "created_utc": 1684423660.0,
+      "parent_id": "t1_jklnayr"
+    },
+    {
+      "id": "j931cg1",
+      "author": "deerhet",
+      "body": "durant park apartments enjoyer",
+      "score": 0,
+      "created_utc": 1676755432,
+      "parent_id": "t1_j90fpbo"
+    },
+    {
+      "id": "j92pp6g",
+      "author": "ControlAcceptable",
+      "body": "where is this?",
+      "score": 0,
+      "created_utc": 1676750351,
+      "parent_id": "t1_j8zt0o6"
+    },
+    {
+      "id": "j8zfsyx",
+      "author": "[deleted]",
+      "body": "[deleted]",
+      "score": -1,
+      "created_utc": 1676684040,
+      "parent_id": "t1_j8z24fb"
+    },
+    {
+      "id": "j8ze317",
+      "author": "Reformed_Narcissist",
+      "body": "Calrentals",
+      "score": -2,
+      "created_utc": 1676683196,
+      "parent_id": "t3_11503dk"
+    },
+    {
+      "id": "j91i0pt",
+      "author": "Ike348",
+      "body": "And are the answers really going to be any different than they were last month, considering very few people would have moved in that time?",
+      "score": -5,
+      "created_utc": 1676732097,
+      "parent_id": "t1_j8zzmw5"
+    },
+    {
+      "id": "j8zynav",
+      "author": "Ike348",
+      "body": "This thread is posted every month, just search the subreddit ffs",
+      "score": -11,
+      "created_utc": 1676693761,
+      "parent_id": "t3_11503dk"
+    },
+    {
+      "id": "j8z24fb",
+      "author": "appledoee",
+      "body": "rent in Berkeley is pretty high but in general i’d say a double is $700-900 (i personally wouldn’t pay over 1000), a triple is $600-800, and a single can be $900-1200. these are pretty broad ranges for what I would deem okay to pay. i hope they can give u a general sense of rent prices! personally i pay 750 for a double on the north side",
+      "score": -38,
+      "created_utc": 1676677624,
+      "parent_id": "t3_11503dk"
+    }
+  ]
+}
