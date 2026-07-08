@@ -177,3 +177,11 @@ The AI tool for all milestones is **Claude (Claude Code CLI)**. The pattern for 
 **Hypothesis:** A wins on precision-style questions because B's windows cut sentences mid-thought and bleed adjacent authors together, diluting embeddings; B might accidentally win where merging neighbors pulls related short comments into one window. Whatever the data says gets reported.
 
 **Implementation:** `compare_chunking.py` — builds strategy-B chunks in memory, embeds both sets fresh, prints the per-query table for the README.
+
+### Stretch C — Metadata Filtering
+
+**Motivation:** every chunk already carries `source_type` (reddit_thread / web_guide) and `year` metadata, and the corpus genuinely disagrees along those axes — e.g., on the housing-search timeline, 2022 Reddit commenters say start in February while the 2024 student-life guides say 6–8 weeks before move-in is fine. A user should be able to ask "what do the *guides* say?" vs "what does *Reddit* say?" — and "recent info only" mitigates the temporal-staleness risk named in Anticipated Challenges.
+
+**Plan:** add optional `source_type` and `min_year` filters through the whole stack: `retrieve()` passes a ChromaDB `where` clause (`{"source_type": …}`, `{"year": {"$gte": …}}`, `$and` when both); hybrid mode applies the same predicate to the BM25 candidate pool in Python so both retrieval modes respect filters; `ask()` forwards them; the Gradio UI gets a source-type dropdown and a minimum-year dropdown; the CLI gets `--source-type` / `--min-year`.
+
+**Verification (visible effect):** the timeline question run three ways — unfiltered (mixed sources), `source_type=web_guide` (guide advice only), `source_type=reddit_thread` (student advice only) — must return visibly different source lists and answers; `min_year=2025` must restrict results to the 2025 safety thread.

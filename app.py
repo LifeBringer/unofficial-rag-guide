@@ -21,10 +21,15 @@ EXAMPLES = [
 ]
 
 
-def handle_query(question, mode):
+def handle_query(question, mode, source_filter, year_filter):
     if not question.strip():
         return "Ask a question first.", "", ""
-    result = ask(question, mode=mode)
+    result = ask(
+        question, mode=mode,
+        source_type={"Reddit threads": "reddit_thread",
+                     "Student guides": "web_guide"}.get(source_filter),
+        min_year=None if year_filter == "any" else int(year_filter),
+    )
     sources = "\n".join(f"• {s}" for s in result["sources"])
     chunks = "\n\n".join(
         f"#{i} ({h['source']}, {h['year']}, "
@@ -43,10 +48,18 @@ with gr.Blocks(title="The Unofficial Guide — UC Berkeley Housing") as demo:
     )
     inp = gr.Textbox(label="Your question",
                      placeholder="e.g. What happens if I decline my housing offer?")
-    mode = gr.Radio(["semantic", "hybrid"], value="semantic",
-                    label="Retrieval mode",
-                    info="hybrid = BM25 keyword + semantic, fused by "
-                         "reciprocal rank (Stretch A)")
+    with gr.Row():
+        mode = gr.Radio(["semantic", "hybrid"], value="semantic",
+                        label="Retrieval mode",
+                        info="hybrid = BM25 keyword + semantic, fused by "
+                             "reciprocal rank (Stretch A)")
+        source_filter = gr.Dropdown(
+            ["All sources", "Reddit threads", "Student guides"],
+            value="All sources", label="Source filter (Stretch C)")
+        year_filter = gr.Dropdown(
+            ["any", "2022", "2023", "2024", "2025"], value="any",
+            label="From year (Stretch C)",
+            info="only documents from this year or newer")
     btn = gr.Button("Ask", variant="primary")
     answer = gr.Textbox(label="Answer", lines=8)
     sources = gr.Textbox(label="Retrieved from", lines=4)
@@ -54,8 +67,9 @@ with gr.Blocks(title="The Unofficial Guide — UC Berkeley Housing") as demo:
         chunks = gr.Textbox(label="Top-5 chunks with distances", lines=14)
     gr.Examples(EXAMPLES, inputs=inp)
 
-    btn.click(handle_query, inputs=[inp, mode], outputs=[answer, sources, chunks])
-    inp.submit(handle_query, inputs=[inp, mode], outputs=[answer, sources, chunks])
+    query_inputs = [inp, mode, source_filter, year_filter]
+    btn.click(handle_query, inputs=query_inputs, outputs=[answer, sources, chunks])
+    inp.submit(handle_query, inputs=query_inputs, outputs=[answer, sources, chunks])
 
 if __name__ == "__main__":
     demo.launch()

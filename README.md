@@ -341,6 +341,24 @@ Metric: rank of the first retrieved chunk containing a known answer marker (hit@
 
 ---
 
+## Stretch Feature: Metadata Filtering
+
+Every chunk carries `source_type` (reddit_thread / web_guide) and `year` metadata from ingestion. Both are now query-time filters through the whole stack: `retrieve()` builds a ChromaDB `where` clause, hybrid mode applies the same predicate to the BM25 pool, and the Gradio UI has a **source filter** dropdown (All / Reddit threads / Student guides) and a **from-year** dropdown. CLI: `python query.py --source-type web_guide --min-year 2024 "<question>"`.
+
+**Visible effect 1 — source filter separates the corpus's two voices.** The timeline question genuinely divides student folklore from official-adjacent advice, and the filter lets you ask each side separately (same query, three runs; source lists from the actual output):
+
+| Filter | Sources retrieved | Answer (condensed) |
+|---|---|---|
+| All sources | 1 Reddit (2022) + 4 guide sections (2024) | Mixed: "6–8 weeks before move-in" alongside "March and April" |
+| **Student guides only** | 5 guide sections (2024) | "not necessary to secure housing in January or February… wait at least until April… 6–8 weeks before the move-in date" |
+| **Reddit threads only** | 5 chunks, all from the 2022 "Good time to look for housing?" thread | "most properties only become available about a month in advance… start looking in July for a July or August move-in" |
+
+**Visible effect 2 — year filter enforces recency.** "How much should I budget for rent?" unfiltered retrieves 4 chunks from the 2023 rent-transparency thread; with `--min-year 2024` those are excluded and all 5 hits become 2024 guide sections (budget-setting advice, no crowd-sourced price points). This directly mitigates the temporal-staleness risk from `planning.md` — a user who wants only fresh information can enforce it — while also showing the tradeoff: the freshest sources aren't always the most informative ones (the 2023 thread has the actual numbers).
+
+If a filter combination matches nothing, the system answers "No documents match those filters." rather than silently searching everything.
+
+---
+
 ## Spec Reflection
 
 **One way the spec helped you during implementation:** writing the evaluation plan — with expected answers verified against the raw corpus *before any pipeline code existed* — turned evaluation from a vibe check into a mechanical comparison, and it forced better questions: Q5 was deliberately designed as an aggregation stressor because the spec's Anticipated Challenges section predicted top-k retrieval would fail at "what's typical" questions, and that prediction landed exactly (Q5 graded partially accurate for an unrepresentative range). The chunking section paid off the same way: because the spec committed to numbers and reasons (900-char cap, 120 overlap, title prefix, per-comment chunks), the AI-generated implementation matched intent on the first pass and every deviation was detectable as a deviation instead of a silent choice.

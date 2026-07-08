@@ -116,12 +116,30 @@ def _chat(messages: list[dict]) -> str:
     )
 
 
-def retrieve(query: str, k: int = TOP_K) -> list[dict]:
-    """Return the top-k chunks for a query: [{text, distance, ...metadata}]."""
+def _where(source_type: str | None, min_year: int | None) -> dict | None:
+    """Build a ChromaDB metadata filter (Stretch C)."""
+    clauses = []
+    if source_type:
+        clauses.append({"source_type": source_type})
+    if min_year:
+        clauses.append({"year": {"$gte": min_year}})
+    if not clauses:
+        return None
+    return clauses[0] if len(clauses) == 1 else {"$and": clauses}
+
+
+def retrieve(query: str, k: int = TOP_K, source_type: str | None = None,
+             min_year: int | None = None) -> list[dict]:
+    """Return the top-k chunks for a query: [{text, distance, ...metadata}].
+
+    source_type ("reddit_thread"/"web_guide") and min_year filter by chunk
+    metadata before ranking (Stretch C).
+    """
     embedding = _model().encode([query], normalize_embeddings=True)
     result = _collection().query(
         query_embeddings=embedding.tolist(),
         n_results=k,
+        where=_where(source_type, min_year),
         include=["documents", "metadatas", "distances"],
     )
     return [
@@ -141,17 +159,23 @@ def _context_block(hits: list[dict]) -> str:
     return "\n\n".join(lines)
 
 
-def ask(question: str, k: int = TOP_K, mode: str = "semantic") -> dict:
+def ask(question: str, k: int = TOP_K, mode: str = "semantic",
+        source_type: str | None = None, min_year: int | None = None) -> dict:
     """Answer a question grounded in retrieved chunks.
 
     mode: "semantic" (default) or "hybrid" (BM25 + semantic RRF — Stretch A).
+    source_type / min_year: metadata filters (Stretch C).
     Returns {"answer": str, "sources": [str], "hits": [chunk dicts]}.
     """
     if mode == "hybrid":
         from hybrid import retrieve_hybrid          # lazy: rank-bm25 optional
-        hits = retrieve_hybrid(question, k)
+        hits = retrieve_hybrid(question, k, source_type=source_type,
+                               min_year=min_year)
     else:
-        hits = retrieve(question, k)
+        hits = retrieve(question, k, source_type=source_type, min_year=min_year)
+    if not hits:
+        return {"answer": "No documents match those filters.", "sources": [],
+                "hits": []}
     answer = _chat([
         {"role": "system", "content": SYSTEM_PROMPT},
         {"role": "user", "content": f"Sources:\n\n{_context_block(hits)}\n\n"
@@ -176,15 +200,21 @@ if __name__ == "__main__":
                     help="show retrieved chunks without calling the LLM")
     ap.add_argument("--mode", choices=["semantic", "hybrid"], default="semantic",
                     help="retrieval mode (hybrid = BM25 + semantic, Stretch A)")
+    ap.add_argument("--source-type", choices=["reddit_thread", "web_guide"],
+                    help="only retrieve from this source type (Stretch C)")
+    ap.add_argument("--min-year", type=int,
+                    help="only retrieve from documents this year or newer (Stretch C)")
     args = ap.parse_args()
 
     if args.retrieve_only:
-        for i, hit in enumerate(retrieve(args.query, args.k), 1):
+        for i, hit in enumerate(retrieve(args.query, args.k, args.source_type,
+                                         args.min_year), 1):
             print(f"\n#{i}  distance={hit['distance']}  source={hit['source']} "
                   f"({hit['kind']}, {hit['year']})")
             print(hit["text"])
     else:
-        result = ask(args.query, args.k, mode=args.mode)
+        result = ask(args.query, args.k, mode=args.mode,
+                     source_type=args.source_type, min_year=args.min_year)
         print(result["answer"])
         print("\nRetrieved from:")
         for s in result["sources"]:
