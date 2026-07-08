@@ -125,9 +125,10 @@ def retrieve(query: str, k: int = TOP_K) -> list[dict]:
         include=["documents", "metadatas", "distances"],
     )
     return [
-        {"text": doc, "distance": round(dist, 3), **meta}
-        for doc, dist, meta in zip(
-            result["documents"][0], result["distances"][0], result["metadatas"][0]
+        {"chunk_id": cid, "text": doc, "distance": round(dist, 3), **meta}
+        for cid, doc, dist, meta in zip(
+            result["ids"][0], result["documents"][0],
+            result["distances"][0], result["metadatas"][0]
         )
     ]
 
@@ -140,12 +141,17 @@ def _context_block(hits: list[dict]) -> str:
     return "\n\n".join(lines)
 
 
-def ask(question: str, k: int = TOP_K) -> dict:
+def ask(question: str, k: int = TOP_K, mode: str = "semantic") -> dict:
     """Answer a question grounded in retrieved chunks.
 
+    mode: "semantic" (default) or "hybrid" (BM25 + semantic RRF — Stretch A).
     Returns {"answer": str, "sources": [str], "hits": [chunk dicts]}.
     """
-    hits = retrieve(question, k)
+    if mode == "hybrid":
+        from hybrid import retrieve_hybrid          # lazy: rank-bm25 optional
+        hits = retrieve_hybrid(question, k)
+    else:
+        hits = retrieve(question, k)
     answer = _chat([
         {"role": "system", "content": SYSTEM_PROMPT},
         {"role": "user", "content": f"Sources:\n\n{_context_block(hits)}\n\n"
@@ -168,6 +174,8 @@ if __name__ == "__main__":
     ap.add_argument("--k", type=int, default=TOP_K)
     ap.add_argument("--retrieve-only", action="store_true",
                     help="show retrieved chunks without calling the LLM")
+    ap.add_argument("--mode", choices=["semantic", "hybrid"], default="semantic",
+                    help="retrieval mode (hybrid = BM25 + semantic, Stretch A)")
     args = ap.parse_args()
 
     if args.retrieve_only:
@@ -176,7 +184,7 @@ if __name__ == "__main__":
                   f"({hit['kind']}, {hit['year']})")
             print(hit["text"])
     else:
-        result = ask(args.query, args.k)
+        result = ask(args.query, args.k, mode=args.mode)
         print(result["answer"])
         print("\nRetrieved from:")
         for s in result["sources"]:

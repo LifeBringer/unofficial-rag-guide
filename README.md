@@ -295,6 +295,27 @@ The proof it's retrieval and not generation: the paraphrase **"What happens if I
 
 ---
 
+## Stretch Feature: Hybrid Search (BM25 + Semantic)
+
+Implemented in [`hybrid.py`](hybrid.py), motivated directly by the Q3 failure above. Run `python hybrid.py --compare "<question>"` to see all three modes side by side; the Gradio UI has a semantic/hybrid retrieval-mode toggle, and the CLI takes `--mode hybrid`.
+
+**How the scores are combined:** BM25 (`rank-bm25`, lowercased word-boundary tokens) is computed over all 387 chunk texts. Each retriever — semantic (cosine) and BM25 — returns its top-20, and results are fused with **Reciprocal Rank Fusion**: a chunk's fused score is Σ 1/(60 + rank) over the lists it appears in, and the top 5 fused chunks go to the LLM. RRF was chosen over weighted score-mixing because cosine distances (~0.2–0.5) and BM25 scores (~8–30) live on incomparable scales; rank fusion needs no normalization or tuned weight.
+
+**Comparison on 4 queries** (retrieval ranks verified; full output via `--compare`):
+
+| Query | Semantic-only | BM25-only | Hybrid (RRF) | Winner |
+|---|---|---|---|---|
+| Eval Q3: *"What do students warn will happen if you decline your…housing offer?"* | Answering chunk ranks **8th** → system **refuses** | Answering chunk ranks **10th** (long guide sections rack up points on the query's common words) | Answering chunk ranks **4th** → system **answers correctly** ("about 1.5 months to secure housing… a 'nightmare'", citing the housing-lottery thread) | **Hybrid** |
+| Eval Q1: BART fare + free transit | $2.25 chunk #1 (0.21) | $2.25 chunk #1 (bm25 30.4) | $2.25 chunk #1 (rank 1 in both lists) | Tie — no regression |
+| Eval Q2: Raj Properties aliases | Alias list #1, employee dispute #2 | Dispute #1, alias list #4 | Both in the top 2 (order flipped) | Tie — no regression |
+| *"Is URSA Apartments actually Raj Properties?"* | **Misses the alias-list chunk** (rank 9) — top hit is the content-free "what properties are the ones tha raj group controls?" | Alias-list chunk **#1** at bm25 20.15 — more than double the runner-up, on the exact rare token "URSA" | Alias-list chunk #2 | **BM25 / hybrid** |
+
+**Which performed better and why:** hybrid, for two different reasons the comparison separates cleanly. On Q3 the win mechanism is **consensus** — neither retriever alone ranks the answering chunk in its top 5 (semantic 8th, BM25 10th), but it's the only strong chunk *present in both top-20 lists*, so RRF promotes it past chunks that only one retriever liked. On the URSA query the mechanism is classic **exact-token rescue**: "URSA" is a rare proper noun that MiniLM's embedding barely registers but BM25 scores decisively. And on the queries semantic already won (Q1, Q2), fusion left the winners in place — the tie rows are the evidence hybrid costs nothing. (A detail that mattered: the Milestone 3 cleaning fix that stripped U+2060 word-joiners glued to "URSA" is what makes the BM25 token match possible at all.)
+
+**End-to-end effect on the evaluation:** re-running eval Q3 with `--mode hybrid` flips it from **Inaccurate** (refusal) to **Accurate** — the response cites the DO-NOT-DECLINE warning from the 2019 housing-lottery thread. Eval score improves from 3/1/1 (accurate/partial/inaccurate) to 4/1/0 with hybrid retrieval; semantic remains the documented default so the evaluation report above reflects the base system.
+
+---
+
 ## Spec Reflection
 
 **One way the spec helped you during implementation:** writing the evaluation plan — with expected answers verified against the raw corpus *before any pipeline code existed* — turned evaluation from a vibe check into a mechanical comparison, and it forced better questions: Q5 was deliberately designed as an aggregation stressor because the spec's Anticipated Challenges section predicted top-k retrieval would fail at "what's typical" questions, and that prediction landed exactly (Q5 graded partially accurate for an unrepresentative range). The chunking section paid off the same way: because the spec committed to numbers and reasons (900-char cap, 120 overlap, title prefix, per-comment chunks), the AI-generated implementation matched intent on the first pass and every deviation was detectable as a deviation instead of a silent choice.

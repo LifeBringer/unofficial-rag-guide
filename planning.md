@@ -147,3 +147,19 @@ The AI tool for all milestones is **Claude (Claude Code CLI)**. The pattern for 
 - *Verification:* the two-sided test — (a) on-corpus queries must produce answers traceable to retrieved chunks with sources named in the output text; (b) an off-corpus query ("best CS professor?") must produce an explicit refusal, not general knowledge. I will also check the code enforces attribution programmatically (sources appended from retrieval metadata, not left to the LLM's discretion).
 
 **Milestone 6 — Evaluation:** run the 5 questions above end-to-end myself and grade against the expected answers; AI is used only to help analyze *why* a failure happened, not to grade its own output.
+
+---
+
+## Stretch Features
+
+*(This section is updated before starting each stretch feature, per the project instructions.)*
+
+### Stretch A — Hybrid Search (BM25 + semantic)
+
+**Motivation (from the Milestone 6 failure):** eval Q3 failed because the answering chunk ranked 8th semantically — the query's phrasing pulled guide sections into the top 5. But the query and the answer share a rare literal token: only 5 chunks in the whole corpus contain the word "decline". A lexical scorer should rank that chunk near the top. Hypothesis: **hybrid retrieval fixes Q3 without hurting the queries semantic search already wins.**
+
+**Approach:** BM25 (via `rank-bm25`, tokenized on lowercased word boundaries) over all 387 chunk texts, fused with semantic search using **Reciprocal Rank Fusion**: each retriever returns its top-20, and a chunk's fused score is Σ 1/(60 + rank) across the two lists. RRF is chosen over weighted score mixing because BM25 scores and cosine distances live on incomparable scales — rank fusion needs no normalization or tuned weight.
+
+**Plan:** implement in `hybrid.py` (`retrieve_bm25`, `retrieve_hybrid`); add a retrieval-mode toggle to `ask()` and the Gradio UI; compare semantic-only vs BM25-only vs hybrid on at least 3 queries including failing Q3 and two queries semantic already handles well (Q1 BART fare, Q2 Raj aliases) to check for regressions; report which method wins per query in the README.
+
+**Verification:** re-run eval Q3 end-to-end in hybrid mode — success = the system answers with the DO-NOT-DECLINE warning and cites the housing-lottery thread instead of refusing.

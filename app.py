@@ -21,13 +21,15 @@ EXAMPLES = [
 ]
 
 
-def handle_query(question):
+def handle_query(question, mode):
     if not question.strip():
         return "Ask a question first.", "", ""
-    result = ask(question)
+    result = ask(question, mode=mode)
     sources = "\n".join(f"• {s}" for s in result["sources"])
     chunks = "\n\n".join(
-        f"#{i} (distance {h['distance']}, {h['source']}, {h['year']})\n{h['text']}"
+        f"#{i} ({h['source']}, {h['year']}, "
+        + (f"ranks {h['ranks']}" if "ranks" in h else f"distance {h['distance']}")
+        + f")\n{h['text']}"
         for i, h in enumerate(result["hits"], 1)
     )
     return result["answer"], sources, chunks
@@ -41,6 +43,10 @@ with gr.Blocks(title="The Unofficial Guide — UC Berkeley Housing") as demo:
     )
     inp = gr.Textbox(label="Your question",
                      placeholder="e.g. What happens if I decline my housing offer?")
+    mode = gr.Radio(["semantic", "hybrid"], value="semantic",
+                    label="Retrieval mode",
+                    info="hybrid = BM25 keyword + semantic, fused by "
+                         "reciprocal rank (Stretch A)")
     btn = gr.Button("Ask", variant="primary")
     answer = gr.Textbox(label="Answer", lines=8)
     sources = gr.Textbox(label="Retrieved from", lines=4)
@@ -48,8 +54,8 @@ with gr.Blocks(title="The Unofficial Guide — UC Berkeley Housing") as demo:
         chunks = gr.Textbox(label="Top-5 chunks with distances", lines=14)
     gr.Examples(EXAMPLES, inputs=inp)
 
-    btn.click(handle_query, inputs=inp, outputs=[answer, sources, chunks])
-    inp.submit(handle_query, inputs=inp, outputs=[answer, sources, chunks])
+    btn.click(handle_query, inputs=[inp, mode], outputs=[answer, sources, chunks])
+    inp.submit(handle_query, inputs=[inp, mode], outputs=[answer, sources, chunks])
 
 if __name__ == "__main__":
     demo.launch()
