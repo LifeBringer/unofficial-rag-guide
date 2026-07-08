@@ -159,28 +159,58 @@ def _context_block(hits: list[dict]) -> str:
     return "\n\n".join(lines)
 
 
+def _rewrite_query(question: str, history: list[tuple[str, str]]) -> str:
+    """Rewrite a follow-up into a standalone question (Stretch D).
+
+    Retrieval can't resolve pronouns — "what other names do THEY use?" has no
+    semantic signal — so the conversation history is used to produce a
+    self-contained query before embedding it.
+    """
+    transcript = "\n".join(f"User: {q}\nAssistant: {a}" for q, a in history)
+    rewritten = _chat([
+        {"role": "system", "content":
+            "Rewrite the user's follow-up question as a single standalone "
+            "question that makes sense with no conversation context, replacing "
+            "pronouns and references with what they refer to. Keep it short. "
+            "Output ONLY the rewritten question."},
+        {"role": "user", "content": f"Conversation so far:\n{transcript}\n\n"
+                                    f"Follow-up question: {question}"},
+    ])
+    return rewritten.strip().strip('"')
+
+
 def ask(question: str, k: int = TOP_K, mode: str = "semantic",
-        source_type: str | None = None, min_year: int | None = None) -> dict:
+        source_type: str | None = None, min_year: int | None = None,
+        history: list[tuple[str, str]] | None = None) -> dict:
     """Answer a question grounded in retrieved chunks.
 
     mode: "semantic" (default) or "hybrid" (BM25 + semantic RRF — Stretch A).
     source_type / min_year: metadata filters (Stretch C).
-    Returns {"answer": str, "sources": [str], "hits": [chunk dicts]}.
+    history: prior (user, assistant) turns; enables follow-up questions via
+        query rewriting + history-aware generation (Stretch D).
+    Returns {"answer", "sources", "hits", "search_query"}.
     """
+    search_query = _rewrite_query(question, history) if history else question
+
     if mode == "hybrid":
         from hybrid import retrieve_hybrid          # lazy: rank-bm25 optional
-        hits = retrieve_hybrid(question, k, source_type=source_type,
+        hits = retrieve_hybrid(search_query, k, source_type=source_type,
                                min_year=min_year)
     else:
-        hits = retrieve(question, k, source_type=source_type, min_year=min_year)
+        hits = retrieve(search_query, k, source_type=source_type,
+                        min_year=min_year)
     if not hits:
         return {"answer": "No documents match those filters.", "sources": [],
-                "hits": []}
-    answer = _chat([
-        {"role": "system", "content": SYSTEM_PROMPT},
-        {"role": "user", "content": f"Sources:\n\n{_context_block(hits)}\n\n"
-                                    f"Question: {question}"},
-    ])
+                "hits": [], "search_query": search_query}
+
+    messages = [{"role": "system", "content": SYSTEM_PROMPT}]
+    for user_turn, assistant_turn in history or []:
+        messages.append({"role": "user", "content": user_turn})
+        messages.append({"role": "assistant", "content": assistant_turn})
+    messages.append({"role": "user",
+                     "content": f"Sources:\n\n{_context_block(hits)}\n\n"
+                                f"Question: {question}"})
+    answer = _chat(messages)
 
     # Attribution is guaranteed in code: list every source that was in the
     # context, numbered exactly as the model saw it, regardless of what the
@@ -189,12 +219,34 @@ def ask(question: str, k: int = TOP_K, mode: str = "semantic",
         f'[Source {i}] {hit["source"]} — "{hit["title"]}" ({hit["year"]}) {hit["url"]}'
         for i, hit in enumerate(hits, 1)
     ]
-    return {"answer": answer, "sources": sources, "hits": hits}
+    return {"answer": answer, "sources": sources, "hits": hits,
+            "search_query": search_query}
+
+
+def chat_repl(mode: str) -> None:
+    """Interactive multi-turn session (Stretch D). Ctrl-D or 'quit' to exit."""
+    history: list[tuple[str, str]] = []
+    print("Multi-turn chat — follow-ups like 'what about X?' work. "
+          "'quit' to exit.")
+    while True:
+        try:
+            question = input("\nyou> ").strip()
+        except EOFError:
+            break
+        if question.lower() in ("quit", "exit", ""):
+            break
+        result = ask(question, mode=mode, history=history)
+        if result["search_query"] != question:
+            print(f"    (searched as: {result['search_query']})")
+        print(f"\n{result['answer']}")
+        for s in result["sources"]:
+            print(f"  • {s}")
+        history.append((question, result["answer"]))
 
 
 if __name__ == "__main__":
     ap = argparse.ArgumentParser()
-    ap.add_argument("query")
+    ap.add_argument("query", nargs="?", default=None)
     ap.add_argument("--k", type=int, default=TOP_K)
     ap.add_argument("--retrieve-only", action="store_true",
                     help="show retrieved chunks without calling the LLM")
@@ -204,7 +256,15 @@ if __name__ == "__main__":
                     help="only retrieve from this source type (Stretch C)")
     ap.add_argument("--min-year", type=int,
                     help="only retrieve from documents this year or newer (Stretch C)")
+    ap.add_argument("--chat", action="store_true",
+                    help="interactive multi-turn session (Stretch D)")
     args = ap.parse_args()
+
+    if args.chat:
+        chat_repl(args.mode)
+        raise SystemExit
+    if args.query is None:
+        ap.error("provide a query, or use --chat")
 
     if args.retrieve_only:
         for i, hit in enumerate(retrieve(args.query, args.k, args.source_type,

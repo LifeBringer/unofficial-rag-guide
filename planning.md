@@ -185,3 +185,18 @@ The AI tool for all milestones is **Claude (Claude Code CLI)**. The pattern for 
 **Plan:** add optional `source_type` and `min_year` filters through the whole stack: `retrieve()` passes a ChromaDB `where` clause (`{"source_type": …}`, `{"year": {"$gte": …}}`, `$and` when both); hybrid mode applies the same predicate to the BM25 candidate pool in Python so both retrieval modes respect filters; `ask()` forwards them; the Gradio UI gets a source-type dropdown and a minimum-year dropdown; the CLI gets `--source-type` / `--min-year`.
 
 **Verification (visible effect):** the timeline question run three ways — unfiltered (mixed sources), `source_type=web_guide` (guide advice only), `source_type=reddit_thread` (student advice only) — must return visibly different source lists and answers; `min_year=2025` must restrict results to the 2025 safety thread.
+
+### Stretch D — Conversational Memory
+
+**The technical problem:** a follow-up like "What other names do they operate under?" is unanswerable by naive RAG — "they" carries no semantic signal, so retrieval returns junk and the grounded model rightly refuses. Memory in a RAG system isn't just passing chat history to the LLM; **retrieval itself needs the history**.
+
+**Approach — query rewriting + history-aware generation:**
+1. When a conversation history exists, the LLM first rewrites the follow-up into a standalone question ("they" → "Raj Properties") — a cheap extra call that produces a retrievable query.
+2. Retrieval runs on the rewritten question (through the same mode/filter stack as Stretches A and C).
+3. Generation receives the chat history plus the fresh sources, with the same grounding prompt; the rewritten query is returned and displayed for transparency.
+
+**Plan:** `ask(..., history=[...])` in `query.py` with a `_rewrite_query()` helper; `--chat` REPL mode in the CLI; the Gradio UI becomes a chatbot with per-turn sources and retrieved-chunk panels.
+
+**Verification (memory, not topic coincidence):** a two-turn exchange whose follow-up must answer correctly *with* history and fail *without* it — proving the answer came from remembered context, not luck.
+
+*Update after testing:* the originally planned control (Raj Properties → "what other names do they operate under?") turned out to be a weak proof — the follow-up's own words ("operate under… names") retrieve the alias chunk even without history. The documented exchange became "Is BART viable from Oakland?" → "How much does it cost?", where the no-history control visibly derails to apartment-rent chunks. Lesson: a memory demo needs a follow-up whose standalone form retrieves a *different topic*, not just a degraded ranking.

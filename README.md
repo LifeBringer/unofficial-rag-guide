@@ -359,6 +359,27 @@ If a filter combination matches nothing, the system answers "No documents match 
 
 ---
 
+## Stretch Feature: Conversational Memory
+
+The Gradio UI is a chat with memory, and the CLI has an interactive mode (`python query.py --chat`).
+
+**Why memory in RAG is a retrieval problem, not just a prompt problem:** a follow-up like *"How much does it cost?"* is unanswerable by naive RAG — the pronoun carries no semantic signal, so retrieval fetches whatever generic "cost" content is nearest, and grounding does the rest of the damage faithfully. So memory here has two parts (`ask(..., history=…)` in `query.py`): (1) an LLM **query-rewriting step** turns the follow-up into a standalone question using the conversation history *before* embedding it, and (2) generation receives the prior turns plus the freshly retrieved sources under the same grounding prompt. The rewritten search query is displayed under the answer (*"searched as: …"*) for transparency, and rewriting composes with Stretches A and C (the rewritten query goes through whichever retrieval mode and filters are active).
+
+**Multi-turn exchange (actual transcript), with the control that proves it's memory:**
+
+> **User:** Is BART a viable commute option from Oakland?
+>
+> **System:** One commenter reports that commuting from Oakland to Berkeley via BART is "perfectly viable" [Source 1]. Another commenter agrees, stating that BART is a "fairly reliable option" for commuting from Oakland, especially for those on a tight budget [Source 5]. […]
+>
+> **User:** How much does it cost?
+>
+> **System:** The cost of a one-way BART ride from Oakland to Berkeley is $2.25 [Source 3]. Additionally, one commenter mentions that you can save $3 by autoloading $48 for $45 [Source 1].
+> *(searched as: "What is the cost of a one-way BART ride from Oakland to Berkeley?")* — all sources: `reddit_commute-nearby` (2023)
+
+**Control — the same follow-up with no history** (fresh session, identical words): *"How much does it cost?"* retrieves the **rent-prices thread** instead and answers about apartment rent — *"The cost of rent in Berkeley varies, with one commenter reporting $1800 for a Southside studio [Source 1]…"*. Same question, different topic entirely. The correct turn-2 answer above therefore cannot be topic coincidence: it exists only because the rewriter resolved "it" → BART from the remembered turn 1.
+
+---
+
 ## Spec Reflection
 
 **One way the spec helped you during implementation:** writing the evaluation plan — with expected answers verified against the raw corpus *before any pipeline code existed* — turned evaluation from a vibe check into a mechanical comparison, and it forced better questions: Q5 was deliberately designed as an aggregation stressor because the spec's Anticipated Challenges section predicted top-k retrieval would fail at "what's typical" questions, and that prediction landed exactly (Q5 graded partially accurate for an unrepresentative range). The chunking section paid off the same way: because the spec committed to numbers and reasons (900-char cap, 120 overlap, title prefix, per-comment chunks), the AI-generated implementation matched intent on the first pass and every deviation was detectable as a deviation instead of a silent choice.
