@@ -163,3 +163,17 @@ The AI tool for all milestones is **Claude (Claude Code CLI)**. The pattern for 
 **Plan:** implement in `hybrid.py` (`retrieve_bm25`, `retrieve_hybrid`); add a retrieval-mode toggle to `ask()` and the Gradio UI; compare semantic-only vs BM25-only vs hybrid on at least 3 queries including failing Q3 and two queries semantic already handles well (Q1 BART fare, Q2 Raj aliases) to check for regressions; report which method wins per query in the README.
 
 **Verification:** re-run eval Q3 end-to-end in hybrid mode — success = the system answers with the DO-NOT-DECLINE warning and cites the housing-lottery thread instead of refusing.
+
+### Stretch B — Chunking Strategy Comparison
+
+**Question:** does the structure-aware chunking actually beat the naive approach the project instructions warn against ("split every 500 characters"), or was that engineering effort wasted?
+
+**Strategies compared on the same cleaned documents:**
+- **A (production):** structure-aware — 1 comment = 1 chunk, ≤900-char pieces, 120-char overlap on long prose only, `[thread title]` prefix, short-comment filter. 387 chunks.
+- **B (naive fixed):** each document's cleaned text concatenated (title, selftext, comments in order), sliced into fixed 500-char windows with 100-char overlap. No comment boundaries, no per-chunk title prefix, no filtering.
+
+**Method:** same query set = the 5 evaluation questions. Both chunk sets embedded with the same model (all-MiniLM-L6-v2), ranked by cosine similarity per query. Objective metric: **hit@5** — does any top-5 chunk contain the known answer marker (e.g., "2.25" for Q1, "DO NOT DECLINE" for Q3, "objectively the best dorm" for Q4)? Plus the rank of the first answering chunk. Markers are graded against the *retrieval* stage because generation can't fix retrieval misses (Milestone 4 lesson).
+
+**Hypothesis:** A wins on precision-style questions because B's windows cut sentences mid-thought and bleed adjacent authors together, diluting embeddings; B might accidentally win where merging neighbors pulls related short comments into one window. Whatever the data says gets reported.
+
+**Implementation:** `compare_chunking.py` — builds strategy-B chunks in memory, embeds both sets fresh, prints the per-query table for the README.

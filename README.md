@@ -316,6 +316,31 @@ Implemented in [`hybrid.py`](hybrid.py), motivated directly by the Q3 failure ab
 
 ---
 
+## Stretch Feature: Chunking Strategy Comparison
+
+Run `python compare_chunking.py` ([source](compare_chunking.py)). It rebuilds the corpus under a second chunking strategy and retrieves the same 5 evaluation questions against both, with the same embedding model:
+
+- **A — structure-aware (production):** 1 comment = 1 chunk, ≤900 chars, title prefix, short-comment filter → 387 chunks.
+- **B — naive fixed-size:** each document's cleaned text concatenated and sliced into fixed 500-char windows with 100-char overlap (exactly the "split every 500 characters" approach the project instructions warn against) → 286 chunks.
+
+Metric: rank of the first retrieved chunk containing a known answer marker (hit@5 in bold where it matters):
+
+| Query | A: structure-aware | B: fixed-500 | Winner |
+|---|---|---|---|
+| Q1 BART fare ("2.25") | rank 1 | rank 1 | tie |
+| Q2 Raj aliases (alias list) | rank 1 | rank 1 | tie |
+| Q3 decline offer ("DO NOT DECLINE") | **rank 8** | **not in top 20** | **A, decisively** |
+| Q4 Blackwell vs Unit 3 (canonical quote) | rank 1 | rank 1 | tie |
+| Q5 typical rent (a single-room price) | rank 2 | rank 1 | B, marginally |
+
+**Which performed better and why:** structure-aware — but the comparison is more instructive than a blowout. On the three easy queries, *any* chunking works: when a query shares strong vocabulary with a dense answer chunk, boundaries barely matter. The differentiation shows up at the extremes:
+
+- **Q3 is the damning case for fixed-size.** The window that contains the warning (`reddit_housing-lottery#f004`) starts mid-word (*"st the blue plan is so it's required…"*), splices the tail of a **different author's** meal-plan comment onto the front of the DO-NOT-DECLINE comment, and carries no thread title. Its embedding is as much "meal plans" as "declining housing offers," so it falls below rank 20 — unrecoverable at any reasonable k, whereas the structure-aware chunk at rank 8 was rescued by hybrid search (see above). Fixed-size chunking converts a retrieval *near-miss* into a retrieval *impossibility*.
+- **Q5 is the honest counterpoint.** Fixed windows accidentally *help* aggregation queries: slicing the rent thread merges several one-line price comments into single price-dense windows that match "what does a room cost" strongly. That's a real (if unintended) win for merging — and it points at the actual fix for Q5-style questions: deliberate aggregation over metadata, not accidental adjacency.
+- **Not captured by the metric but decisive for this system:** attribution. Strategy B's windows routinely mix authors (as `#f004` shows), so a grounded "one commenter reports…" claim built on a mixed window could stitch two people's opinions into one. Per-comment chunks make per-claim attribution structurally sound — which this project treats as non-negotiable.
+
+---
+
 ## Spec Reflection
 
 **One way the spec helped you during implementation:** writing the evaluation plan — with expected answers verified against the raw corpus *before any pipeline code existed* — turned evaluation from a vibe check into a mechanical comparison, and it forced better questions: Q5 was deliberately designed as an aggregation stressor because the spec's Anticipated Challenges section predicted top-k retrieval would fail at "what's typical" questions, and that prediction landed exactly (Q5 graded partially accurate for an unrepresentative range). The chunking section paid off the same way: because the spec committed to numbers and reasons (900-char cap, 120 overlap, title prefix, per-comment chunks), the AI-generated implementation matched intent on the first pass and every deviation was detectable as a deviation instead of a silent choice.
