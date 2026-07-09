@@ -18,3 +18,7 @@ chroma/
 
 # macOS
 .DS_Store
+
+# Raw screen recordings (only the compressed demo.mp4 gets committed)
+assets/*.mov
+RECORDING_SCRIPT.md

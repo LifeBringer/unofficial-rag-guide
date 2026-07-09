@@ -17,6 +17,8 @@ python query.py "What happens if I decline my housing offer?"   # or CLI
 python evaluate.py            # reproduce the evaluation report
 ```
 
+**Demo video:** [assets/demo.mp4](assets/demo.mp4) (4:58 — playback is 2.4× the original recording speed to fit the time limit, so the narration is brisk). It shows: a query where retrieval demonstrably works (with the retrieved chunks open), the out-of-scope refusal, evaluation Q3 failing live in semantic mode and answering in hybrid mode, metadata filtering flipping the sources on the timeline question, a multi-turn exchange with the query-rewrite line visible, and a walkthrough of the evaluation report.
+
 ---
 
 ## Domain
