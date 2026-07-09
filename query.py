@@ -60,7 +60,12 @@ Keep answers to a few sentences or a short list — direct and concrete."""
 
 @lru_cache(maxsize=1)
 def _model() -> SentenceTransformer:
-    return SentenceTransformer(MODEL_NAME)
+    try:
+        # Use the local cache without phoning home — avoids minutes of retry
+        # stalls on flaky networks when the model is already downloaded.
+        return SentenceTransformer(MODEL_NAME, local_files_only=True)
+    except Exception:
+        return SentenceTransformer(MODEL_NAME)   # first run: download
 
 
 @lru_cache(maxsize=1)
@@ -91,12 +96,14 @@ def _chat(messages: list[dict]) -> str:
                 model=LLM_MODEL, temperature=0.2, max_tokens=600, messages=messages
             )
             return response.choices[0].message.content.strip()
-        except groq.PermissionDeniedError as err:
-            # 403 "check your network settings" = Groq blocks this IP (VPN);
-            # not a key problem. Fall through to the HF router if possible.
+        except (groq.PermissionDeniedError, groq.APIConnectionError) as err:
+            # PermissionDenied 403 "check your network settings" = Groq blocks
+            # this IP (VPN); APIConnectionError = no route / transient outage.
+            # Neither is a key problem. Fall through to the HF router if possible.
             if not _hf_token():
                 raise
-            print(f"[query] Groq unreachable from this network ({err.status_code}); "
+            reason = getattr(err, "status_code", None) or "connection error"
+            print(f"[query] Groq unreachable ({reason}); "
                   f"falling back to HF router with {HF_LLM_MODEL}", flush=True)
 
     if token := _hf_token():
@@ -172,7 +179,10 @@ def _rewrite_query(question: str, history: list[tuple[str, str]]) -> str:
             "Rewrite the user's follow-up question as a single standalone "
             "question that makes sense with no conversation context, replacing "
             "pronouns and references with what they refer to. Keep it short. "
-            "Output ONLY the rewritten question."},
+            "IMPORTANT: if the follow-up already stands alone — no pronouns or "
+            "references that need the conversation to resolve — output it "
+            "EXACTLY as written, word for word, changing nothing. "
+            "Output ONLY the question."},
         {"role": "user", "content": f"Conversation so far:\n{transcript}\n\n"
                                     f"Follow-up question: {question}"},
     ])

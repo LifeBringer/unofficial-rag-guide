@@ -378,6 +378,8 @@ The Gradio UI is a chat with memory, and the CLI has an interactive mode (`pytho
 
 **Control — the same follow-up with no history** (fresh session, identical words): *"How much does it cost?"* retrieves the **rent-prices thread** instead and answers about apartment rent — *"The cost of rent in Berkeley varies, with one commenter reporting $1800 for a Southside studio [Source 1]…"*. Same question, different topic entirely. The correct turn-2 answer above therefore cannot be topic coincidence: it exists only because the rewriter resolved "it" → BART from the remembered turn 1.
 
+**A bug the demo caught — rewriting must be conservative.** Re-asking an already-standalone question *within* a conversation used to trigger the rewriter anyway, and its harmless-looking paraphrase ("UC Berkeley" → "University of California, Berkeley…") shifted retrieval enough to break the hybrid rescue of eval Q3, whose winning margin is one rank. The rewrite prompt now instructs the model to return standalone questions **verbatim** and only resolve actual references — verified over repeated trials. General lesson: every LLM step inserted before retrieval is a new source of phrasing variance, and phrasing variance is exactly what the Q3 failure case showed retrieval is sensitive to.
+
 ---
 
 ## Spec Reflection

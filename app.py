@@ -81,20 +81,20 @@ with gr.Blocks(title="The Unofficial Guide — UC Berkeley Housing") as demo:
         mode = gr.Radio(["semantic", "hybrid"], value="semantic",
                         label="Retrieval mode",
                         info="hybrid = BM25 keyword + semantic, fused by "
-                             "reciprocal rank (Stretch A)")
+                             "reciprocal rank")
         source_filter = gr.Dropdown(
             ["All sources", "Reddit threads", "Student guides"],
-            value="All sources", label="Source filter (Stretch C)")
+            value="All sources", label="Source filter")
         year_filter = gr.Dropdown(
             ["any", "2022", "2023", "2024", "2025"], value="any",
-            label="From year (Stretch C)",
+            label="From year",
             info="only documents from this year or newer")
     with gr.Row():
         btn = gr.Button("Ask", variant="primary")
         reset = gr.Button("New conversation")
-    sources = gr.Textbox(label="Retrieved from (latest turn)", lines=4)
+    sources = gr.Textbox(label="Retrieved from (latest turn)", lines=6, max_lines=10)
     with gr.Accordion("Retrieved chunks (what the model actually saw)", open=False):
-        chunks = gr.Textbox(label="Top-5 chunks", lines=14)
+        chunks = gr.Textbox(label="Top-5 chunks", lines=18, max_lines=18)
     gr.Examples(EXAMPLES, inputs=inp)
 
     pairs = gr.State([])
