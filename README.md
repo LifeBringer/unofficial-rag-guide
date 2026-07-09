@@ -1,4 +1,4 @@
-# The Unofficial Guide — UC Berkeley Housing (Project 1)
+# The Unofficial Guide — UC Berkeley Housing
 
 A RAG system that makes student-shared knowledge about UC Berkeley housing searchable and answerable, with citations, from 12 real r/berkeley threads and 2 student guides.
 
@@ -17,7 +17,10 @@ python query.py "What happens if I decline my housing offer?"   # or CLI
 python evaluate.py            # reproduce the evaluation report
 ```
 
-**Demo video:** [assets/demo.mp4](assets/demo.mp4) (4:58 — playback is 2.4× the original recording speed to fit the time limit, so the narration is brisk). It shows: a query where retrieval demonstrably works (with the retrieved chunks open), the out-of-scope refusal, evaluation Q3 failing live in semantic mode and answering in hybrid mode, metadata filtering flipping the sources on the timeline question, a multi-turn exchange with the query-rewrite line visible, and a walkthrough of the evaluation report.
+**Demo video:** 
+
+https://github.com/user-attachments/assets/7e2fb618-4ab0-4998-8ffe-cac102541bbb
+(4:58 — playback is 2.4× the original recording speed to fit the time limit, so the narration is brisk). It shows: a query where retrieval demonstrably works (with the retrieved chunks open), the out-of-scope refusal, evaluation Q3 failing live in semantic mode and answering in hybrid mode, metadata filtering flipping the sources on the timeline question, a multi-turn exchange with the query-rewrite line visible, and a walkthrough of the evaluation report.
 
 ---
 
